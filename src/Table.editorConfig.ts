@@ -122,6 +122,9 @@ export function getProperties(
         hidePropertiesIn(defaultProperties, values, ["cellWidgets"]);
         hidePropertiesIn(defaultProperties, values, ["cellAttribute"]);
     }
+    if (values.showEmptyPlaceholder === "none") {
+        hidePropertiesIn(defaultProperties, values, ["emptyPlaceholder"]);
+    }
     return defaultProperties;
 }
 

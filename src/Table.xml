@@ -20,8 +20,8 @@
                     <description />
                     <enumerationValues>
                         <enumerationValue key="attribute">Attribute</enumerationValue>
-                        <enumerationValue key="dynamicText">Text</enumerationValue>
-                        <enumerationValue key="custom">Custom</enumerationValue>
+                        <enumerationValue key="dynamicText">Dynamic text</enumerationValue>
+                        <enumerationValue key="custom">Custom content</enumerationValue>
                     </enumerationValues>
                 </property>
                 <property key="cellWidgets" type="widgets" dataSource="dataSourceCell">
@@ -29,7 +29,7 @@
                     <description />
                 </property>
                 <property key="cellTextTemplate" type="textTemplate" required="false" multiline="false" dataSource="dataSourceCell">
-                    <caption>Text</caption>
+                    <caption>Dyanmic text</caption>
                     <description/>
                     <translations>
                         <translation lang="en_US"></translation>
