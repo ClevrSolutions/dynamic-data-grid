@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.clevr.widget.web.table.Table" pluginWidget="true" needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Table</name>
+    <description>Create a tabel grid with variable columns</description>
+    <icon />
+    <properties>
+        <propertyGroup caption="Data Source">
+
+            <propertyGroup caption="Cell">
+                <property key="dataSourceCell" type="datasource" isList="true">
+                    <caption>Data Source</caption>
+                    <description />
+                </property>
+                <property key="showCellAs" type="enumeration" defaultValue="attribute">
+                    <caption>Show As</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="attribute">Attribute</enumerationValue>
+                        <enumerationValue key="dynamicText">Text</enumerationValue>
+                        <enumerationValue key="custom">Custom</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="cellWidgets" type="widgets" dataSource="dataSourceCell">
+                    <caption>Cell Content</caption>
+                    <description />
+                </property>
+                <property key="cellTextTemplate" type="textTemplate" required="false" multiline="false" dataSource="dataSourceCell">
+                    <caption>Text</caption>
+                    <description/>
+                    <translations>
+                        <translation lang="en_US"></translation>
+                    </translations>
+                </property>
+                <property key="cellAttribute" type="attribute" required="false" dataSource="dataSourceCell">
+                    <caption>Attribute</caption>
+                    <description/>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Row">
+                <property key="referenceRow" type="association" selectableObjects="objectsDataSourceRow" dataSource="dataSourceCell">
+                    <caption>Reference</caption>
+                    <description/>
+                    <associationTypes>
+                        <associationType name="Reference"/>
+                    </associationTypes>
+                </property>            
+                <property key="objectsDataSourceRow" type="datasource" isList="true">
+                    <caption>Data Source</caption>
+                    <description/>
+                </property>
+                <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
+                    <caption>Empty list message</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="none">None</enumerationValue>
+                        <enumerationValue key="custom">Custom</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="emptyPlaceholder" type="widgets" required="false">
+                    <caption>Empty placeholder</caption>
+                    <description />
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Column">
+                <property key="referenceColumn" type="association" selectableObjects="objectsDataSourceColumn" dataSource="dataSourceCell">
+                    <caption>Reference</caption>
+                    <description/>
+                    <associationTypes>
+                        <associationType name="Reference"/>
+                    </associationTypes>
+                </property>
+                <property key="objectsDataSourceColumn" type="datasource" isList="true">
+                    <caption>Data Source</caption>
+                    <description/>
+                </property>
+                <property key="attributeHeader" type="attribute" required="false" dataSource="objectsDataSourceColumn">
+                    <caption>Header Attribute</caption>
+                    <description/>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Events">
+                <property key="onClickRow" type="action" required="false" dataSource="objectsDataSourceRow">
+                    <caption>On click action</caption>
+                    <description />
+                </property>
+            </propertyGroup>
+
+        </propertyGroup>
+    </properties>
+</widget>
