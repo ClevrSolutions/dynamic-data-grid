@@ -1,6 +1,7 @@
 ## Table
 Table grid with variable columns
-!No more need for nest list views!
+
+**!No more nested list views, lightning fast rendering!**
 
 ## Features
 - Table grid, with variable columns.

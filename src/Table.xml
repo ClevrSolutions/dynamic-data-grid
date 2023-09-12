@@ -28,14 +28,14 @@
                     <caption>Cell content</caption>
                     <description />
                 </property>
-                <property key="cellTextTemplate" type="textTemplate" required="false" multiline="false" dataSource="dataSourceCell">
+                <property key="cellTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceCell">
                     <caption>Dyanmic text</caption>
                     <description/>
                     <translations>
                         <translation lang="en_US"></translation>
                     </translations>
                 </property>
-                <property key="cellAttribute" type="attribute" required="false" dataSource="dataSourceCell">
+                <property key="cellAttribute" type="attribute" dataSource="dataSourceCell">
                     <caption>Attribute</caption>
                     <description/>
                     <attributeTypes>
@@ -64,7 +64,7 @@
                         <enumerationValue key="custom">Custom</enumerationValue>
                     </enumerationValues>
                 </property>
-                <property key="emptyPlaceholder" type="widgets" required="false">
+                <property key="emptyPlaceholder" type="widgets">
                     <caption>Empty placeholder</caption>
                     <description />
                 </property>
@@ -82,7 +82,7 @@
                     <caption>Data source</caption>
                     <description/>
                 </property>
-                <property key="attributeHeader" type="attribute" required="false" dataSource="objectsDataSourceColumn">
+                <property key="attributeHeader" type="attribute" dataSource="objectsDataSourceColumn">
                     <caption>Header attribute</caption>
                     <description/>
                     <attributeTypes>

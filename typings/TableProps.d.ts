@@ -18,15 +18,15 @@ export interface TableContainerProps {
     dataSourceCell: ListValue;
     showCellAs: ShowCellAsEnum;
     cellWidgets: ListWidgetValue;
-    cellTextTemplate?: ListExpressionValue<string>;
-    cellAttribute?: ListAttributeValue<string>;
+    cellTextTemplate: ListExpressionValue<string>;
+    cellAttribute: ListAttributeValue<string>;
     referenceRow: ListReferenceValue;
     objectsDataSourceRow: ListValue;
     showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
-    emptyPlaceholder?: ReactNode;
+    emptyPlaceholder: ReactNode;
     referenceColumn: ListReferenceValue;
     objectsDataSourceColumn: ListValue;
-    attributeHeader?: ListAttributeValue<string>;
+    attributeHeader: ListAttributeValue<string>;
     onClickRow?: ListActionValue;
 }
 
