@@ -2,7 +2,7 @@
   "name": "table",
   "widgetName": "Table",
   "version": "1.0.0",
-  "description": "Create a tabel grid with variable columns",
+  "description": "Create a table grid with variable columns",
   "copyright": "Clevr NL B.V.",
   "author": "Andries Smit",
   "engines": {

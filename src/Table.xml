@@ -5,18 +5,18 @@
     xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
     <name>Table</name>
-    <description>Create a tabel grid with variable columns</description>
-    <icon />
+    <description/>
+    <icon>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</icon>
     <properties>
         <propertyGroup caption="Data Source">
 
             <propertyGroup caption="Cell">
                 <property key="dataSourceCell" type="datasource" isList="true">
-                    <caption>Data Source</caption>
+                    <caption>Data source</caption>
                     <description />
                 </property>
                 <property key="showCellAs" type="enumeration" defaultValue="attribute">
-                    <caption>Show As</caption>
+                    <caption>Show</caption>
                     <description />
                     <enumerationValues>
                         <enumerationValue key="attribute">Attribute</enumerationValue>
@@ -25,7 +25,7 @@
                     </enumerationValues>
                 </property>
                 <property key="cellWidgets" type="widgets" dataSource="dataSourceCell">
-                    <caption>Cell Content</caption>
+                    <caption>Cell content</caption>
                     <description />
                 </property>
                 <property key="cellTextTemplate" type="textTemplate" required="false" multiline="false" dataSource="dataSourceCell">
@@ -53,7 +53,7 @@
                     </associationTypes>
                 </property>            
                 <property key="objectsDataSourceRow" type="datasource" isList="true">
-                    <caption>Data Source</caption>
+                    <caption>Data source</caption>
                     <description/>
                 </property>
                 <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
@@ -79,11 +79,11 @@
                     </associationTypes>
                 </property>
                 <property key="objectsDataSourceColumn" type="datasource" isList="true">
-                    <caption>Data Source</caption>
+                    <caption>Data source</caption>
                     <description/>
                 </property>
                 <property key="attributeHeader" type="attribute" required="false" dataSource="objectsDataSourceColumn">
-                    <caption>Header Attribute</caption>
+                    <caption>Header attribute</caption>
                     <description/>
                     <attributeTypes>
                         <attributeType name="String" />
