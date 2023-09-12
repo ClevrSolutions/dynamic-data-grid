@@ -125,6 +125,37 @@ export function getProperties(
     if (values.showEmptyPlaceholder === "none") {
         hidePropertiesIn(defaultProperties, values, ["emptyPlaceholder"]);
     }
+    if (values.showHeaderAs === "attribute") {
+        hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
+        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
+    }
+    if (values.showHeaderAs === "custom") {
+        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
+        hidePropertiesIn(defaultProperties, values, ["headerAttribute"]);
+    }
+    if (values.showHeaderAs === "dynamicText") {
+        hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
+        hidePropertiesIn(defaultProperties, values, ["headerAttribute"]);
+    }
+    if (values.showRowAs === "none") {
+        hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
+        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate"]);
+        hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
+        hidePropertiesIn(defaultProperties, values, ["rowColumnNameTextTemplate"]);
+        hidePropertiesIn(defaultProperties, values, ["onClickRowHeader"]);
+    }
+    if (values.showRowAs === "attribute") {
+        hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
+        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate"]);
+    }
+    if (values.showRowAs === "custom") {
+        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate"]);
+        hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
+    }
+    if (values.showRowAs === "dynamicText") {
+        hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
+        hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
+    }
     return defaultProperties;
 }
 

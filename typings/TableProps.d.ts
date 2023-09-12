@@ -4,11 +4,15 @@
  * @author Mendix Widgets Framework Team
  */
 import { ComponentType, CSSProperties, ReactNode } from "react";
-import { ListValue, ListActionValue, ListAttributeValue, ListExpressionValue, ListReferenceValue, ListWidgetValue } from "mendix";
+import { DynamicValue, ListValue, ListActionValue, ListAttributeValue, ListExpressionValue, ListReferenceValue, ListWidgetValue } from "mendix";
 
 export type ShowCellAsEnum = "attribute" | "dynamicText" | "custom";
 
+export type ShowRowAsEnum = "none" | "attribute" | "dynamicText" | "custom";
+
 export type ShowEmptyPlaceholderEnum = "none" | "custom";
+
+export type ShowHeaderAsEnum = "attribute" | "dynamicText" | "custom";
 
 export interface TableContainerProps {
     name: string;
@@ -20,14 +24,29 @@ export interface TableContainerProps {
     cellWidgets: ListWidgetValue;
     cellTextTemplate: ListExpressionValue<string>;
     cellAttribute: ListAttributeValue<string>;
+    cellClass?: ListExpressionValue<string>;
     referenceRow: ListReferenceValue;
-    objectsDataSourceRow: ListValue;
+    dataSourceRow: ListValue;
+    showRowAs: ShowRowAsEnum;
+    rowColumnNameTextTemplate?: DynamicValue<string>;
+    rowWidgets: ListWidgetValue;
+    rowTextTemplate: ListExpressionValue<string>;
+    rowAttribute: ListAttributeValue<string>;
     showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
     emptyPlaceholder: ReactNode;
+    rowClass?: ListExpressionValue<string>;
     referenceColumn: ListReferenceValue;
-    objectsDataSourceColumn: ListValue;
-    attributeHeader: ListAttributeValue<string>;
+    dataSourceColumn: ListValue;
+    showHeaderAs: ShowHeaderAsEnum;
+    headerAttribute: ListAttributeValue<string>;
+    headerWidgets: ListWidgetValue;
+    headerTextTemplate: ListExpressionValue<string>;
+    columnClass?: ListExpressionValue<string>;
+    onClickRowHeader?: ListActionValue;
     onClickRow?: ListActionValue;
+    onClickColumnHeader?: ListActionValue;
+    onClickColumn?: ListActionValue;
+    onClickCell?: ListActionValue;
 }
 
 export interface TablePreviewProps {
@@ -44,12 +63,27 @@ export interface TablePreviewProps {
     cellWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     cellTextTemplate: string;
     cellAttribute: string;
+    cellClass: string;
     referenceRow: string;
-    objectsDataSourceRow: {} | { caption: string } | { type: string } | null;
+    dataSourceRow: {} | { caption: string } | { type: string } | null;
+    showRowAs: ShowRowAsEnum;
+    rowColumnNameTextTemplate: string;
+    rowWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    rowTextTemplate: string;
+    rowAttribute: string;
     showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
     emptyPlaceholder: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    rowClass: string;
     referenceColumn: string;
-    objectsDataSourceColumn: {} | { caption: string } | { type: string } | null;
-    attributeHeader: string;
+    dataSourceColumn: {} | { caption: string } | { type: string } | null;
+    showHeaderAs: ShowHeaderAsEnum;
+    headerAttribute: string;
+    headerWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    headerTextTemplate: string;
+    columnClass: string;
+    onClickRowHeader: {} | null;
     onClickRow: {} | null;
+    onClickColumnHeader: {} | null;
+    onClickColumn: {} | null;
+    onClickCell: {} | null;
 }
