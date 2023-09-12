@@ -7,6 +7,7 @@ Table grid with variable columns
 - Table grid, with variable columns.
 - Render cell content: attribute, text or custom
 - Empty row content message
+- Empty cell objects can be omitted
 - On row click action
 - Use the default styling of Mendix Data Widget Grid
 
@@ -17,12 +18,15 @@ Table grid with variable columns
 
 2. Place the widget the page
 
-![Domain model](assets/widget.png)
+![widget on page](assets/widget.png)
 
 3. Select the cell as data source, Column and Row relation
 
-![Domain model](assets/properties.png)
+![widget properties](assets/properties.png)
 
+4. Add some Data
+
+![widget properties](assets/web.png)
 
 ## Demo project
 https://testtable-sandbox.mxapps.io/
