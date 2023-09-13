@@ -1,6 +1,7 @@
 import { createElement, ReactNode } from "react";
 import classNames from "classnames";
 import { ObjectItem } from "mendix";
+import { Cell } from "./Cell";
 import { TableContainerProps } from "../../typings/TableProps";
 
 function getCellValue(props: TableContainerProps, cell?: ObjectItem): ReactNode {
@@ -8,12 +9,12 @@ function getCellValue(props: TableContainerProps, cell?: ObjectItem): ReactNode 
     let value: ReactNode = "";
 
     if (!cell) {
-        return "";
+        return "\u00A0";
     }
     if (showCellAs === "attribute") {
-        value = cellAttribute?.get(cell)?.displayValue ?? "";
+        value = cellAttribute?.get(cell)?.displayValue ?? "\u00A0";
     } else if (showCellAs === "dynamicText") {
-        value = cellTextTemplate?.get(cell)?.value ?? "";
+        value = cellTextTemplate?.get(cell)?.value ?? "\u00A0";
     } else if (showCellAs === "custom") {
         value = cellWidgets.get(cell);
     } else {
@@ -28,12 +29,12 @@ function getRowHeaderValue(props: TableContainerProps, row?: ObjectItem): ReactN
     let value: ReactNode = "";
 
     if (!row) {
-        return "";
+        return "\u00A0";
     }
     if (showRowAs === "attribute") {
-        value = rowAttribute?.get(row)?.displayValue ?? "";
+        value = rowAttribute?.get(row)?.displayValue ?? "\u00A0";
     } else if (showRowAs === "dynamicText") {
-        value = rowTextTemplate?.get(row)?.value ?? "";
+        value = rowTextTemplate?.get(row)?.value ?? "\u00A0";
     } else if (showRowAs === "custom") {
         value = rowWidgets.get(row);
     } else {
@@ -44,7 +45,7 @@ function getRowHeaderValue(props: TableContainerProps, row?: ObjectItem): ReactN
 }
 
 export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: number): ReactNode {
-    const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn } = props;
+    const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs } = props;
     const { showRowAs, columnClass, cellClass } = props;
     const { onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
     const cells =
@@ -61,31 +62,18 @@ export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: num
                     : onClickColumn
                     ? (): void => onClickColumn?.get(column).execute()
                     : undefined;
-            const cellClassColumn = columnClass?.get(column).value ?? "";
-            const cellClassValue = cell ? cellClass?.get(cell).value ?? "" : "";
+            const cellClassColumn = columnClass?.get(column).value ?? undefined;
+            const cellClassValue = (cell && cellClass?.get(cell).value) ?? undefined;
             return (
-                <div
-                    className={classNames("td", cellClassColumn, cellClassValue, {
-                        "td-borders": rowIndex === 0,
-                        clickable: !!onClick
-                    })}
+                <Cell
+                    className={classNames(cellClassColumn, cellClassValue)}
                     key={`row_${row.id}_cell_${column.id}`}
-                    role={onClick ? "button" : "cell"}
                     onClick={onClick}
-                    tabIndex={onClick ? 0 : undefined}
-                    onKeyDown={
-                        onClick
-                            ? e => {
-                                  if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget) {
-                                      e.preventDefault();
-                                      onClick();
-                                  }
-                              }
-                            : undefined
-                    }
+                    rowIndex={rowIndex}
+                    renderAs={renderAs}
                 >
                     {getCellValue(props, cell)}
-                </div>
+                </Cell>
             );
         }) ?? [];
     if (showRowAs !== "none") {
@@ -95,25 +83,9 @@ export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: num
             ? (): void => onClickRow?.get(row).execute()
             : undefined;
         cells.unshift(
-            <div
-                className={classNames("td", { "td-borders": rowIndex === 0, clickable: !!onClick })}
-                key={`row_${row.id}_cell_header`}
-                role={onClick ? "button" : "cell"}
-                onClick={onClick}
-                tabIndex={onClick ? 0 : undefined}
-                onKeyDown={
-                    onClick
-                        ? e => {
-                              if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget) {
-                                  e.preventDefault();
-                                  onClick();
-                              }
-                          }
-                        : undefined
-                }
-            >
+            <Cell key={`row_${row.id}_cell_header`} onClick={onClick} rowIndex={rowIndex} renderAs={renderAs}>
                 {getRowHeaderValue(props, row)}
-            </div>
+            </Cell>
         );
     }
     return cells;

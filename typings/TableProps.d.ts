@@ -14,6 +14,8 @@ export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
 export type ShowHeaderAsEnum = "attribute" | "dynamicText" | "custom";
 
+export type RenderAsEnum = "grid" | "table";
+
 export interface TableContainerProps {
     name: string;
     class: string;
@@ -47,6 +49,7 @@ export interface TableContainerProps {
     onClickColumnHeader?: ListActionValue;
     onClickColumn?: ListActionValue;
     onClickCell?: ListActionValue;
+    renderAs: RenderAsEnum;
 }
 
 export interface TablePreviewProps {
@@ -86,4 +89,5 @@ export interface TablePreviewProps {
     onClickColumnHeader: {} | null;
     onClickColumn: {} | null;
     onClickCell: {} | null;
+    renderAs: RenderAsEnum;
 }

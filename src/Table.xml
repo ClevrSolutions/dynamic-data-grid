@@ -196,5 +196,16 @@
             </propertyGroup>
         </propertyGroup>
 
+        <propertyGroup caption="Display">
+            <property key="renderAs" type="enumeration" defaultValue="grid">
+                <caption>Show</caption>
+                <description />
+                <enumerationValues>
+                    <enumerationValue key="grid">Grid</enumerationValue>
+                    <enumerationValue key="table">Table</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
     </properties>
 </widget>
