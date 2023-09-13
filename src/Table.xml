@@ -57,7 +57,7 @@
                     <associationTypes>
                         <associationType name="Reference"/>
                     </associationTypes>
-                </property>            
+                </property>
                 <property key="dataSourceRow" type="datasource" isList="true">
                     <caption>Data source</caption>
                     <description/>
@@ -71,7 +71,7 @@
                         <enumerationValue key="dynamicText">Dynamic text</enumerationValue>
                         <enumerationValue key="custom">Custom content</enumerationValue>
                     </enumerationValues>
-                </property>                
+                </property>
                 <property key="rowColumnNameTextTemplate" required="false" type="textTemplate" multiline="false">
                     <caption>Row column name</caption>
                     <description/>
@@ -129,9 +129,10 @@
                     <description/>
                 </property>
                 <property key="showHeaderAs" type="enumeration" defaultValue="attribute">
-                    <caption>Show</caption>
+                    <caption>Show column header</caption>
                     <description />
                     <enumerationValues>
+                        <enumerationValue key="none">None</enumerationValue>
                         <enumerationValue key="attribute">Attribute</enumerationValue>
                         <enumerationValue key="dynamicText">Dynamic text</enumerationValue>
                         <enumerationValue key="custom">Custom content</enumerationValue>
@@ -196,9 +197,9 @@
             </propertyGroup>
         </propertyGroup>
 
-        <propertyGroup caption="Display">
+        <propertyGroup caption="Apperance">
             <property key="renderAs" type="enumeration" defaultValue="grid">
-                <caption>Show</caption>
+                <caption>Show as</caption>
                 <description />
                 <enumerationValues>
                     <enumerationValue key="grid">Grid</enumerationValue>

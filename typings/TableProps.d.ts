@@ -12,7 +12,7 @@ export type ShowRowAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
 export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
-export type ShowHeaderAsEnum = "attribute" | "dynamicText" | "custom";
+export type ShowHeaderAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
 export type RenderAsEnum = "grid" | "table";
 

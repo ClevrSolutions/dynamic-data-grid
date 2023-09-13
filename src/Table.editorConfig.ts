@@ -125,6 +125,13 @@ export function getProperties(
     if (values.showEmptyPlaceholder === "none") {
         hidePropertiesIn(defaultProperties, values, ["emptyPlaceholder"]);
     }
+    if (values.showHeaderAs === "none") {
+        hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
+        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
+        hidePropertiesIn(defaultProperties, values, ["headerAttribute"]);
+        hidePropertiesIn(defaultProperties, values, ["rowColumnNameTextTemplate"]);
+        hidePropertiesIn(defaultProperties, values, ["onClickColumnHeader"]);
+    }
     if (values.showHeaderAs === "attribute") {
         hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
         hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
@@ -155,6 +162,9 @@ export function getProperties(
     if (values.showRowAs === "dynamicText") {
         hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
         hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
+    }
+    if (values.onClickColumn !== null || values.onClickRow !== null) {
+        hidePropertiesIn(defaultProperties, values, ["onClickCell"]);
     }
     return defaultProperties;
 }

@@ -11,7 +11,7 @@ import "./ui/Table.css";
 
 export class Table extends Component<TableContainerProps> {
     render(): ReactNode {
-        const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs } = this.props;
+        const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs, showHeaderAs } = this.props;
         const rows = dataSourceRow.items ?? [];
 
         let columnCount = dataSourceColumn.items?.length || 0;
@@ -21,9 +21,11 @@ export class Table extends Component<TableContainerProps> {
 
         return (
             <TableFrame columnCount={columnCount} className={this.props.class} style={style} renderAs={renderAs}>
-                <Row key="header" renderAs={renderAs}>
-                    {Headers(this.props)}
-                </Row>
+                {showHeaderAs !== "none" && (
+                    <Row key="header" renderAs={renderAs}>
+                        {Headers(this.props)}
+                    </Row>
+                )}
                 {rows.map((row, index) => (
                     <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
                         {Cells(this.props, row, index)}
