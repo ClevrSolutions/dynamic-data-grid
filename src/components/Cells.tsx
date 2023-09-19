@@ -44,15 +44,22 @@ function getRowHeaderValue(props: TableContainerProps, row?: ObjectItem): ReactN
     return value;
 }
 
-export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: number): ReactNode {
-    const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs } = props;
+export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: number, loading: boolean): ReactNode {
+    const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs, pageCell } = props;
     const { showRowAs, columnClass, cellClass } = props;
     const { onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
+    // potential optimize with hash table?
     const cells =
         dataSourceColumn.items?.map(column => {
             const cell = dataSourceCell.items?.find(
                 i => referenceRow.get(i).value?.id === row.id && referenceColumn.get(i).value?.id === column.id
             );
+            if (pageCell && cell === undefined && !loading) {
+                console.error(
+                    `Table widget - No cell found for row ${row.id} column ${column.id} while 'Optimize cell paging' is enabled.
+Please make sure your cell sort order and row sort order are matching, and cell do exists, or switch of the 'Optimize cell paging' option.`
+                );
+            }
 
             const onClick =
                 cell && onClickCell
@@ -67,7 +74,7 @@ export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: num
             return (
                 <Cell
                     className={classNames(cellClassColumn, cellClassValue)}
-                    key={`row_${row.id}_cell_${column.id}`}
+                    key={`row_${row.id}_coll_${column.id}_cell_${cell?.id}`}
                     onClick={onClick}
                     rowIndex={rowIndex}
                     renderAs={renderAs}

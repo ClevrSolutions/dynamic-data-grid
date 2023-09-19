@@ -1,38 +1,138 @@
-import { Component, ReactNode, createElement } from "react";
+import { ReactElement, createElement, useCallback, useEffect, useState } from "react";
+import classNames from "classnames";
+
 import { Headers } from "./components/Headers";
 import { Row } from "./components/Row";
 import { TableFrame } from "./components/TableFrame";
 import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
 import { Cells } from "./components/Cells";
+import { Pagination } from "./components/Pagination";
 
 import { TableContainerProps } from "../typings/TableProps";
 
 import "./ui/Table.css";
 
-export class Table extends Component<TableContainerProps> {
-    render(): ReactNode {
-        const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs, showHeaderAs } = this.props;
-        const rows = dataSourceRow.items ?? [];
+export default function Table(props: TableContainerProps): ReactElement {
+    const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs, showHeaderAs } = props;
+    const rows = dataSourceRow.items ?? [];
+    const currentPage =
+        props.paging === "row"
+            ? props.dataSourceRow.offset / props.pageSize
+            : props.dataSourceColumn.offset / props.pageSize;
+    const [loading, setLoading] = useState(true);
 
-        let columnCount = dataSourceColumn.items?.length || 0;
-        if (showRowAs !== "none") {
-            columnCount += 1;
+    useEffect(() => {
+        if (props.dataSourceCell.status === "available" && props.dataSourceCell.limit !== 0) {
+            setLoading(false);
         }
+    }, [props.dataSourceCell]);
 
-        return (
-            <TableFrame columnCount={columnCount} className={this.props.class} style={style} renderAs={renderAs}>
-                {showHeaderAs !== "none" && (
-                    <Row key="header" renderAs={renderAs}>
-                        {Headers(this.props)}
-                    </Row>
-                )}
-                {rows.map((row, index) => (
-                    <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
-                        {Cells(this.props, row, index)}
-                    </Row>
-                ))}
-                {rows.length === 0 && EmptyPlaceholder(this.props, columnCount)}
-            </TableFrame>
-        );
+    useEffect(() => {
+        if (props.paging === "row") {
+            props.dataSourceRow.requestTotalCount(true);
+            if (props.dataSourceRow.limit === Number.POSITIVE_INFINITY) {
+                props.dataSourceRow.setLimit(props.pageSize);
+            }
+        }
+        if (props.paging === "column") {
+            props.dataSourceColumn.requestTotalCount(true);
+            if (props.dataSourceColumn.limit === Number.POSITIVE_INFINITY) {
+                props.dataSourceColumn.setLimit(props.pageSize);
+            }
+        }
+    }, [props.dataSourceRow, props.dataSourceColumn, props.pageSize, props.paging]);
+
+    useEffect(() => {
+        const length =
+            props.paging === "row" ? props.dataSourceColumn.items?.length ?? 0 : props.dataSourceRow.items?.length ?? 0;
+        const limit = props.pageSize * length;
+        if (props.pageCell && props.dataSourceCell.limit !== limit) {
+            props.dataSourceCell.setLimit(limit);
+        }
+    }, [
+        props.dataSourceCell,
+        props.dataSourceColumn,
+        props.pageSize,
+        props.pageCell,
+        props.paging,
+        props.dataSourceRow
+    ]);
+
+    const setPage = useCallback(
+        (computePage: (prevPage: number) => number) => {
+            const newPage = computePage(currentPage);
+            if (props.paging === "row") {
+                props.dataSourceRow.setOffset(newPage * props.pageSize);
+            }
+            if (props.paging === "column") {
+                props.dataSourceColumn.setOffset(newPage * props.pageSize);
+            }
+            if (props.pageCell) {
+                const columnCount = props.dataSourceColumn.items?.length ?? 0;
+                props.dataSourceCell.setOffset(newPage * props.pageSize * columnCount);
+                setLoading(true);
+            }
+        },
+        [
+            currentPage,
+            props.dataSourceRow,
+            props.paging,
+            props.pageSize,
+            props.dataSourceColumn,
+            props.dataSourceCell,
+            props.pageCell
+        ]
+    );
+
+    let columnCount = dataSourceColumn.items?.length || 0;
+    if (showRowAs !== "none") {
+        columnCount += 1;
     }
+    const pagination =
+        props.paging === "row" ? (
+            <Pagination
+                canNextPage={props.dataSourceRow.hasMoreItems ?? false}
+                canPreviousPage={currentPage !== 0}
+                gotoPage={(page: number) => setPage && setPage(() => page)}
+                nextPage={() => setPage && setPage(prev => prev + 1)}
+                numberOfItems={props.dataSourceRow.totalCount}
+                page={currentPage}
+                pageSize={props.pageSize}
+                previousPage={() => setPage && setPage(prev => prev - 1)}
+            />
+        ) : (
+            <Pagination
+                canNextPage={props.dataSourceColumn.hasMoreItems ?? false}
+                canPreviousPage={currentPage !== 0}
+                gotoPage={(page: number) => setPage && setPage(() => page)}
+                nextPage={() => setPage && setPage(prev => prev + 1)}
+                numberOfItems={props.dataSourceColumn.totalCount}
+                page={currentPage}
+                pageSize={props.pageSize}
+                previousPage={() => setPage && setPage(prev => prev - 1)}
+            />
+        );
+    console.log("loading" + loading);
+    return (
+        <TableFrame
+            columnCount={columnCount}
+            className={classNames(props.class, `mx-name-${props.name}`)}
+            style={style}
+            renderAs={renderAs}
+            pagination={pagination}
+            pagingPosition={props.pagingPosition}
+        >
+            {showHeaderAs !== "none" && (
+                <Row key="header" renderAs={renderAs}>
+                    {Headers(props)}
+                </Row>
+            )}
+            {rows.map((row, index) => (
+                <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
+                    {Cells(props, row, index, loading)}
+                </Row>
+            ))}
+            {rows.length === 0 && EmptyPlaceholder(props, columnCount)}
+        </TableFrame>
+    );
 }

@@ -163,8 +163,18 @@ export function getProperties(
         hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
         hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
     }
-    if (values.onClickColumn !== null || values.onClickRow !== null) {
+    if (values.onClickColumn !== null) {
         hidePropertiesIn(defaultProperties, values, ["onClickCell"]);
+        hidePropertiesIn(defaultProperties, values, ["onClickRow"]);
+    }
+    if (values.onClickRow !== null) {
+        hidePropertiesIn(defaultProperties, values, ["onClickCell"]);
+        hidePropertiesIn(defaultProperties, values, ["onClickColumn"]);
+    }
+    if (values.paging === "none") {
+        hidePropertiesIn(defaultProperties, values, ["pageSize"]);
+        hidePropertiesIn(defaultProperties, values, ["pageCell"]);
+        hidePropertiesIn(defaultProperties, values, ["pagingPosition"]);
     }
     return defaultProperties;
 }

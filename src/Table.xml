@@ -1,16 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<widget id="com.clevr.widget.web.table.Table" pluginWidget="true" needsEntityContext="true"
-    offlineCapable="true"
-    supportedPlatform="Web"
-    xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="com.clevr.widget.web.table.Table" pluginWidget="true" needsEntityContext="true" offlineCapable="true" supportedPlatform="Web" xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
     <name>Table</name>
-    <description/>
+    <description />
     <icon>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</icon>
     <properties>
-
         <propertyGroup caption="Data Source">
-
             <propertyGroup caption="Cell">
                 <property key="dataSourceCell" type="datasource" isList="true">
                     <caption>Data source</caption>
@@ -31,14 +25,14 @@
                 </property>
                 <property key="cellTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceCell">
                     <caption>Dyanmic text</caption>
-                    <description/>
+                    <description />
                     <translations>
-                        <translation lang="en_US"></translation>
+                        <translation lang="en_US" />
                     </translations>
                 </property>
                 <property key="cellAttribute" type="attribute" dataSource="dataSourceCell">
                     <caption>Attribute</caption>
-                    <description/>
+                    <description />
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
@@ -53,14 +47,14 @@
             <propertyGroup caption="Row">
                 <property key="referenceRow" type="association" selectableObjects="dataSourceRow" dataSource="dataSourceCell">
                     <caption>Reference</caption>
-                    <description/>
+                    <description />
                     <associationTypes>
-                        <associationType name="Reference"/>
+                        <associationType name="Reference" />
                     </associationTypes>
                 </property>
                 <property key="dataSourceRow" type="datasource" isList="true">
                     <caption>Data source</caption>
-                    <description/>
+                    <description />
                 </property>
                 <property key="showRowAs" type="enumeration" defaultValue="none">
                     <caption>Show row header</caption>
@@ -73,10 +67,10 @@
                     </enumerationValues>
                 </property>
                 <property key="rowColumnNameTextTemplate" required="false" type="textTemplate" multiline="false">
-                    <caption>Row column name</caption>
-                    <description/>
+                    <caption>Row column header</caption>
+                    <description />
                     <translations>
-                        <translation lang="en_US"></translation>
+                        <translation lang="en_US" />
                     </translations>
                 </property>
                 <property key="rowWidgets" type="widgets" dataSource="dataSourceRow">
@@ -85,25 +79,17 @@
                 </property>
                 <property key="rowTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceRow">
                     <caption>Dyanmic text</caption>
-                    <description/>
+                    <description />
                     <translations>
-                        <translation lang="en_US"></translation>
+                        <translation lang="en_US" />
                     </translations>
                 </property>
                 <property key="rowAttribute" type="attribute" dataSource="dataSourceRow">
                     <caption>Attribute</caption>
-                    <description/>
+                    <description />
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
-                </property>
-                <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
-                    <caption>Empty list message</caption>
-                    <description />
-                    <enumerationValues>
-                        <enumerationValue key="none">None</enumerationValue>
-                        <enumerationValue key="custom">Custom</enumerationValue>
-                    </enumerationValues>
                 </property>
                 <property key="emptyPlaceholder" type="widgets">
                     <caption>Empty placeholder</caption>
@@ -119,14 +105,14 @@
             <propertyGroup caption="Column">
                 <property key="referenceColumn" type="association" selectableObjects="dataSourceColumn" dataSource="dataSourceCell">
                     <caption>Reference</caption>
-                    <description/>
+                    <description />
                     <associationTypes>
-                        <associationType name="Reference"/>
+                        <associationType name="Reference" />
                     </associationTypes>
                 </property>
                 <property key="dataSourceColumn" type="datasource" isList="true">
                     <caption>Data source</caption>
-                    <description/>
+                    <description />
                 </property>
                 <property key="showHeaderAs" type="enumeration" defaultValue="attribute">
                     <caption>Show column header</caption>
@@ -140,7 +126,7 @@
                 </property>
                 <property key="headerAttribute" type="attribute" dataSource="dataSourceColumn">
                     <caption>Attribute</caption>
-                    <description/>
+                    <description />
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
@@ -151,9 +137,9 @@
                 </property>
                 <property key="headerTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceColumn">
                     <caption>Dyanmic text</caption>
-                    <description/>
+                    <description />
                     <translations>
-                        <translation lang="en_US"></translation>
+                        <translation lang="en_US" />
                     </translations>
                 </property>
                 <property key="columnClass" type="expression" required="false" dataSource="dataSourceColumn">
@@ -164,7 +150,7 @@
             </propertyGroup>
         </propertyGroup>
 
-        <propertyGroup caption="Events">            
+        <propertyGroup caption="Events">
             <propertyGroup caption="Row header">
                 <property key="onClickRowHeader" type="action" required="false" dataSource="dataSourceRow">
                     <caption>On click action</caption>
@@ -206,7 +192,40 @@
                     <enumerationValue key="table">Table</enumerationValue>
                 </enumerationValues>
             </property>
+            <property key="paging" type="enumeration" defaultValue="none">
+                <caption>Paging</caption>
+                <description>When set to None all data are loaded</description>
+                <enumerationValues>
+                    <enumerationValue key="none">None</enumerationValue>
+                    <enumerationValue key="row">Row</enumerationValue>
+                    <enumerationValue key="column">Column</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="pagingPosition" type="enumeration" defaultValue="bottom">
+                <caption>Paging position</caption>
+                <description />
+                <enumerationValues>
+                    <enumerationValue key="bottom">Below grid</enumerationValue>
+                    <enumerationValue key="top">Above grid</enumerationValue>
+                    <enumerationValue key="both">Both</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="pageSize" type="integer" defaultValue="20">
+                <caption>Page size</caption>
+                <description />
+            </property>
+            <property key="pageCell" type="boolean" defaultValue="false">
+                <caption>Optimize cell paging</caption>
+                <description>Only enable when each row/column has a cell, and sorting of the cells and rows/column are are equal. Using data source Database or XPath. Does not support add/deletes.</description>
+            </property>
+            <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
+                <caption>Empty list message</caption>
+                <description />
+                <enumerationValues>
+                    <enumerationValue key="none">None</enumerationValue>
+                    <enumerationValue key="custom">Custom</enumerationValue>
+                </enumerationValues>
+            </property>
         </propertyGroup>
-
     </properties>
 </widget>

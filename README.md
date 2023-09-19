@@ -10,6 +10,7 @@ Table grid with variable columns
 - Empty cell objects can be omitted
 - On row click action
 - Use the default styling of Mendix Data Widget Grid
+- Row and column pagination
 
 ## Usage
 1. Create a model, with a Row, Column and Cell
@@ -27,6 +28,10 @@ Table grid with variable columns
 4. Add some Data
 
 ![widget properties](assets/web.png)
+
+## Notes
+Optimize 'Cell Paging' can only be used when each row/column has a cell, and sorting of the cells and rows/column are are equal. Using data source Database or XPath. Does adding and removing data from the grid.
+When an empty cell is rendered a warning is written in the console log.
 
 ## Demo project
 https://testtable-sandbox.mxapps.io/

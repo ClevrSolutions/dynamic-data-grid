@@ -10,11 +10,15 @@ export type ShowCellAsEnum = "attribute" | "dynamicText" | "custom";
 
 export type ShowRowAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
-export type ShowEmptyPlaceholderEnum = "none" | "custom";
-
 export type ShowHeaderAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
 export type RenderAsEnum = "grid" | "table";
+
+export type PagingEnum = "none" | "row" | "column";
+
+export type PagingPositionEnum = "bottom" | "top" | "both";
+
+export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
 export interface TableContainerProps {
     name: string;
@@ -34,7 +38,6 @@ export interface TableContainerProps {
     rowWidgets: ListWidgetValue;
     rowTextTemplate: ListExpressionValue<string>;
     rowAttribute: ListAttributeValue<string>;
-    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
     emptyPlaceholder: ReactNode;
     rowClass?: ListExpressionValue<string>;
     referenceColumn: ListReferenceValue;
@@ -50,6 +53,11 @@ export interface TableContainerProps {
     onClickColumn?: ListActionValue;
     onClickCell?: ListActionValue;
     renderAs: RenderAsEnum;
+    paging: PagingEnum;
+    pagingPosition: PagingPositionEnum;
+    pageSize: number;
+    pageCell: boolean;
+    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
 }
 
 export interface TablePreviewProps {
@@ -74,7 +82,6 @@ export interface TablePreviewProps {
     rowWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowTextTemplate: string;
     rowAttribute: string;
-    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
     emptyPlaceholder: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowClass: string;
     referenceColumn: string;
@@ -90,4 +97,9 @@ export interface TablePreviewProps {
     onClickColumn: {} | null;
     onClickCell: {} | null;
     renderAs: RenderAsEnum;
+    paging: PagingEnum;
+    pagingPosition: PagingPositionEnum;
+    pageSize: number | null;
+    pageCell: boolean;
+    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
 }
