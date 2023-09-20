@@ -63,7 +63,7 @@ export function Cells(props: CellsProps): ReactElement {
             );
             if (pageCell && cell === undefined && !loading) {
                 console.error(
-                    `Table widget - No cell found for row ${row.id} column ${column.id} while 'Optimize cell paging' is enabled.
+                    `Dynamic Data Grid widget - No cell found for row ${row.id} column ${column.id} while 'Optimize cell paging' is enabled.
 Please make sure your cell sort order and row sort order are matching, and cell do exists, or switch of the 'Optimize cell paging' option.`
                 );
             }

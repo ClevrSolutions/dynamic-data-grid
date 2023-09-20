@@ -16,7 +16,7 @@ export function TableFrame(props: TableFrameProps): ReactElement {
     if (props.renderAs === "grid") {
         const rowStyle = { gridTemplateColumns: "1fr ".repeat(props.columnCount) };
         return (
-            <div className={classNames(props.className, "widget-table")} style={props.style}>
+            <div className={classNames(props.className, "widget-dynamic-data-grid")} style={props.style}>
                 <div className="table-header">
                     {(props.pagingPosition === "top" || props.pagingPosition === "both") && props.pagination}
                 </div>
@@ -32,7 +32,7 @@ export function TableFrame(props: TableFrameProps): ReactElement {
         );
     }
     return (
-        <table className={classNames(props.className, "widget-table")} style={props.style}>
+        <table className={classNames(props.className, "widget-dynamic-data-grid")} style={props.style}>
             {props.children}
         </table>
     );

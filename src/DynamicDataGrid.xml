@@ -4,7 +4,7 @@
     <description />
     <studioProCategory>Data containers</studioProCategory>
     <studioCategory>Data Containers</studioCategory>
-    <helpUrl>https://github.com/ClevrSolutions/table/blob/main/README.md</helpUrl>
+    <helpUrl>https://github.com/ClevrSolutions/dynamic-data-grid/blob/main/README.md</helpUrl>
     <properties>
         <propertyGroup caption="Data Source">
             <propertyGroup caption="Cell">
