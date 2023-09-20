@@ -1,6 +1,6 @@
 {
-  "name": "table",
-  "widgetName": "Table",
+  "name": "dynamic-data-grid",
+  "widgetName": "DynamicDataGrid",
   "version": "1.0.0",
   "description": "Create a table grid with variable columns",
   "copyright": "Clevr NL B.V.",

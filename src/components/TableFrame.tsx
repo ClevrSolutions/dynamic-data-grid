@@ -1,6 +1,6 @@
 import { createElement, ReactNode, ReactElement, CSSProperties } from "react";
 import classNames from "classnames";
-import { RenderAsEnum, PagingPositionEnum } from "typings/TableProps";
+import { RenderAsEnum, PagingPositionEnum } from "typings/DynamicDataGridProps";
 
 interface TableFrameProps {
     children: ReactNode;

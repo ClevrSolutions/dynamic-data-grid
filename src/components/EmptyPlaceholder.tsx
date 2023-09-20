@@ -1,8 +1,15 @@
-import { createElement, ReactNode } from "react";
-import { TableContainerProps } from "../../typings/TableProps";
+import { createElement, ReactNode, ReactElement } from "react";
+import { RenderAsEnum, ShowEmptyPlaceholderEnum } from "../../typings/DynamicDataGridProps";
 
-export function EmptyPlaceholder(props: TableContainerProps, columnCount: number): ReactNode {
-    const { emptyPlaceholder, showEmptyPlaceholder, renderAs } = props;
+interface EmptyPlaceholderProps {
+    emptyPlaceholder: ReactNode;
+    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
+    renderAs: RenderAsEnum;
+    columnCount: number;
+}
+
+export function EmptyPlaceholder(props: EmptyPlaceholderProps): ReactElement {
+    const { emptyPlaceholder, showEmptyPlaceholder, renderAs, columnCount } = props;
     if (renderAs === "grid") {
         return (
             <div

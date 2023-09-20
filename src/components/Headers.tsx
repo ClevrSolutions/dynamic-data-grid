@@ -1,9 +1,9 @@
-import { createElement, ReactNode } from "react";
+import { createElement, ReactNode, ReactElement, Fragment } from "react";
 import { ObjectItem } from "mendix";
 import { Header } from "./Header";
-import { TableContainerProps } from "../../typings/TableProps";
+import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
 
-function getHeaderValue(column: ObjectItem, props: TableContainerProps): ReactNode {
+function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps): ReactNode {
     const { headerAttribute, headerWidgets, headerTextTemplate, showHeaderAs } = props;
     let value: ReactNode = "";
 
@@ -23,28 +23,29 @@ function getHeaderValue(column: ObjectItem, props: TableContainerProps): ReactNo
     return value;
 }
 
-export function Headers(props: TableContainerProps): ReactNode {
+export function Headers(props: DynamicDataGridContainerProps): ReactElement {
     const { dataSourceColumn, showRowAs } = props;
     const { columnClass, onClickColumnHeader, onClickColumn, rowColumnNameTextTemplate, renderAs } = props;
 
-    const headers = dataSourceColumn.items?.map(column => {
-        const onClick =
-            column && onClickColumnHeader
-                ? (): void => onClickColumnHeader?.get(column).execute()
-                : onClickColumn
-                ? (): void => onClickColumn?.get(column).execute()
-                : undefined;
-        return (
-            <Header
-                className={columnClass?.get(column).value ?? ""}
-                onClick={onClick}
-                key={column.id}
-                renderAs={renderAs}
-            >
-                {getHeaderValue(column, props)}
-            </Header>
-        );
-    });
+    const headers =
+        dataSourceColumn.items?.map(column => {
+            const onClick =
+                column && onClickColumnHeader
+                    ? (): void => onClickColumnHeader?.get(column).execute()
+                    : onClickColumn
+                    ? (): void => onClickColumn?.get(column).execute()
+                    : undefined;
+            return (
+                <Header
+                    className={columnClass?.get(column).value ?? ""}
+                    onClick={onClick}
+                    key={column.id}
+                    renderAs={renderAs}
+                >
+                    {getHeaderValue(column, props)}
+                </Header>
+            );
+        }) ?? [];
     if (showRowAs !== "none") {
         const columnName = rowColumnNameTextTemplate?.value ?? "";
         headers?.unshift(
@@ -53,5 +54,5 @@ export function Headers(props: TableContainerProps): ReactNode {
             </Header>
         );
     }
-    return headers;
+    return <Fragment>{headers}</Fragment>;
 }

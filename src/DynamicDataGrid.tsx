@@ -8,11 +8,11 @@ import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
 import { Cells } from "./components/Cells";
 import { Pagination } from "./components/Pagination";
 
-import { TableContainerProps } from "../typings/TableProps";
+import { DynamicDataGridContainerProps } from "../typings/DynamicDataGridProps";
 
-import "./ui/Table.css";
+import "./ui/DynamicDataGrid.css";
 
-export default function Table(props: TableContainerProps): ReactElement {
+export default function DynamicDataGrid(props: DynamicDataGridContainerProps): ReactElement {
     const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs, showHeaderAs } = props;
     const rows = dataSourceRow.items ?? [];
     const currentPage =
@@ -112,7 +112,7 @@ export default function Table(props: TableContainerProps): ReactElement {
                 previousPage={() => setPage && setPage(prev => prev - 1)}
             />
         );
-    console.log("loading" + loading);
+
     return (
         <TableFrame
             columnCount={columnCount}
@@ -124,15 +124,22 @@ export default function Table(props: TableContainerProps): ReactElement {
         >
             {showHeaderAs !== "none" && (
                 <Row key="header" renderAs={renderAs}>
-                    {Headers(props)}
+                    {<Headers {...props} />}
                 </Row>
             )}
-            {rows.map((row, index) => (
+            {rows.map((row, rowIndex) => (
                 <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
-                    {Cells(props, row, index, loading)}
+                    <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
                 </Row>
             ))}
-            {rows.length === 0 && EmptyPlaceholder(props, columnCount)}
+            {rows.length === 0 && (
+                <EmptyPlaceholder
+                    showEmptyPlaceholder={props.showEmptyPlaceholder}
+                    columnCount={columnCount}
+                    emptyPlaceholder={props.emptyPlaceholder}
+                    renderAs={props.renderAs}
+                />
+            )}
         </TableFrame>
     );
 }

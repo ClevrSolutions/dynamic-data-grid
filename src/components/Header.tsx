@@ -1,6 +1,6 @@
 import { createElement, ReactNode, ReactElement } from "react";
 import classNames from "classnames";
-import { RenderAsEnum } from "typings/TableProps";
+import { RenderAsEnum } from "typings/DynamicDataGridProps";
 
 interface RowHeaderProps {
     children: ReactNode;

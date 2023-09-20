@@ -1,5 +1,5 @@
 /**
- * This file was generated from Table.xml
+ * This file was generated from DynamicDataGrid.xml
  * WARNING: All changes made to this file will be overwritten
  * @author Mendix Widgets Framework Team
  */
@@ -20,7 +20,7 @@ export type PagingPositionEnum = "bottom" | "top" | "both";
 
 export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
-export interface TableContainerProps {
+export interface DynamicDataGridContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
@@ -60,7 +60,7 @@ export interface TableContainerProps {
     showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
 }
 
-export interface TablePreviewProps {
+export interface DynamicDataGridPreviewProps {
     /**
      * @deprecated Deprecated since version 9.18.0. Please use class property instead.
      */

@@ -1,10 +1,10 @@
-import { createElement, ReactNode } from "react";
+import { createElement, ReactNode, ReactElement, Fragment } from "react";
 import classNames from "classnames";
 import { ObjectItem } from "mendix";
 import { Cell } from "./Cell";
-import { TableContainerProps } from "../../typings/TableProps";
+import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
 
-function getCellValue(props: TableContainerProps, cell?: ObjectItem): ReactNode {
+function getCellValue(props: DynamicDataGridContainerProps, cell?: ObjectItem): ReactNode {
     const { cellAttribute, cellWidgets, cellTextTemplate, showCellAs } = props;
     let value: ReactNode = "";
 
@@ -24,7 +24,7 @@ function getCellValue(props: TableContainerProps, cell?: ObjectItem): ReactNode 
     return value;
 }
 
-function getRowHeaderValue(props: TableContainerProps, row?: ObjectItem): ReactNode {
+function getRowHeaderValue(props: DynamicDataGridContainerProps, row?: ObjectItem): ReactNode {
     const { rowAttribute, rowWidgets, rowTextTemplate, showRowAs } = props;
     let value: ReactNode = "";
 
@@ -44,9 +44,16 @@ function getRowHeaderValue(props: TableContainerProps, row?: ObjectItem): ReactN
     return value;
 }
 
-export function Cells(props: TableContainerProps, row: ObjectItem, rowIndex: number, loading: boolean): ReactNode {
+interface CellsProps extends DynamicDataGridContainerProps {
+    row: ObjectItem;
+    rowIndex: number;
+    loading: boolean;
+}
+
+export function Cells(props: CellsProps): ReactElement {
     const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs, pageCell } = props;
     const { showRowAs, columnClass, cellClass } = props;
+    const { row, rowIndex, loading } = props;
     const { onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
     // potential optimize with hash table?
     const cells =
@@ -95,5 +102,5 @@ Please make sure your cell sort order and row sort order are matching, and cell 
             </Cell>
         );
     }
-    return cells;
+    return <Fragment>{cells}</Fragment>;
 }

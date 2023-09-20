@@ -1,4 +1,4 @@
-import { TablePreviewProps } from "../typings/TableProps";
+import { DynamicDataGridPreviewProps } from "../typings/DynamicDataGridProps";
 import { hidePropertiesIn } from "@mendix/pluggable-widgets-tools";
 
 import {
@@ -112,7 +112,7 @@ export type PreviewProps =
     | DatasourceProps;
 
 export function getProperties(
-    values: TablePreviewProps,
+    values: DynamicDataGridPreviewProps,
     defaultProperties: Properties /* , target: Platform*/
 ): Properties {
     // Do the values manipulation here to control the visibility of properties in Studio and Studio Pro conditionally.
@@ -206,7 +206,7 @@ export function getProperties(
 // }
 
 export const getPreview = (
-    values: TablePreviewProps,
+    values: DynamicDataGridPreviewProps,
     isDarkMode: boolean,
     spVersion: number[] = [0, 0, 0]
 ): StructurePreviewProps => {
