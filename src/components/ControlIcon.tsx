@@ -1,5 +1,7 @@
 import { ReactElement, createElement } from "react";
 
+// Original source https://github.com/mendix/web-widgets/blob/main/packages/shared/widget-plugin-grid/src/internal/ControlIcon.tsx
+
 export default function ControlIcon({ direction }: { direction: string }): ReactElement {
     const classNames = `pagination-icon ${direction}`;
     switch (direction) {

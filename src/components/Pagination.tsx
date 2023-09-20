@@ -1,6 +1,8 @@
 import { createElement, Dispatch, HTMLAttributes, ReactElement, SetStateAction } from "react";
 import ControlIcon from "./ControlIcon";
 
+// Original source: https://github.com/mendix/web-widgets/blob/main/packages/shared/widget-plugin-grid/src/components/Pagination.tsx
+
 export interface PaginationProps {
     canNextPage: boolean;
     canPreviousPage: boolean;

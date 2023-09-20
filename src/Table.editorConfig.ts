@@ -1,6 +1,17 @@
 import { TablePreviewProps } from "../typings/TableProps";
 import { hidePropertiesIn } from "@mendix/pluggable-widgets-tools";
 
+import {
+    container,
+    datasource,
+    dropzone,
+    rowLayout,
+    // selectable,
+    StructurePreviewProps,
+    text,
+    structurePreviewPalette
+} from "./preview/structure-preview-api";
+
 export type Platform = "web" | "desktop";
 
 export type Properties = PropertyGroup[];
@@ -194,14 +205,168 @@ export function getProperties(
 //     return errors;
 // }
 
-// export function getPreview(values: TablePreviewProps, isDarkMode: boolean, version: number[]): PreviewProps {
-//     // Customize your pluggable widget appearance for Studio Pro.
-//     return {
-//         type: "Container",
-//         children: []
-//     }
-// }
+export const getPreview = (
+    values: TablePreviewProps,
+    isDarkMode: boolean,
+    spVersion: number[] = [0, 0, 0]
+): StructurePreviewProps => {
+    const [x, y] = spVersion;
+    const canHideDataSourceHeader = x >= 9 && y >= 20;
+    const palette = structurePreviewPalette[isDarkMode ? "dark" : "light"];
 
-// export function getCustomCaption(values: TablePreviewProps, platform: Platform): string {
-//     return "Table";
-// }
+    const columns = rowLayout({
+        columnSize: "fixed"
+    })(
+        container({
+            borders: true,
+            grow: values.showRowAs !== "none" ? 1 : 0,
+            backgroundColor: palette.background.topbarStandard
+        })(
+            values.showRowAs === "custom"
+                ? dropzone(
+                      dropzone.placeholder("Row widgets"),
+                      dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+                  )(values.rowWidgets)
+                : container({
+                      padding: 8
+                  })(
+                      text({ fontSize: 10, fontColor: palette.text.secondary })(
+                          values.showRowAs === "dynamicText"
+                              ? values.rowTextTemplate ?? "Dynamic text"
+                              : `[${values.rowAttribute ? values.rowAttribute : "No attribute selected"}]`
+                      )
+                  )
+        ),
+
+        ...[...Array(5)].map(_ =>
+            container({
+                borders: true,
+                grow: 1,
+                backgroundColor: undefined
+            })(
+                values.showCellAs === "custom"
+                    ? dropzone(
+                          dropzone.placeholder("Content widgets"),
+                          dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+                      )(values.cellWidgets)
+                    : container({
+                          padding: 8
+                      })(
+                          text({ fontSize: 10, fontColor: palette.text.secondary })(
+                              values.showCellAs === "dynamicText"
+                                  ? values.cellTextTemplate ?? "Dynamic text"
+                                  : `[${values.cellAttribute ? values.cellAttribute : "No attribute selected"}]`
+                          )
+                      )
+            )
+        )
+    );
+
+    const gridTitle = rowLayout({
+        columnSize: "fixed",
+        backgroundColor: palette.background.topbarData,
+        borders: true,
+        borderWidth: 1
+    })(
+        container({
+            padding: 4
+        })(text({ fontColor: palette.text.data })("Dynamic Data Grid"))
+    );
+
+    const columnHeaders = rowLayout({
+        columnSize: "fixed"
+    })(
+        values.showRowAs !== "none"
+            ? container({
+                  borders: true,
+                  grow: values.showHeaderAs !== "none" ? 1 : 0,
+                  backgroundColor: palette.background.topbarStandard
+              })(
+                  container({
+                      padding: 8
+                  })(
+                      text({
+                          bold: true,
+                          fontSize: 10,
+                          fontColor: palette.text.secondary
+                      })(values.rowColumnNameTextTemplate ?? "Dynamic text")
+                  )
+              )
+            : container({
+                  grow: 0
+              })(),
+        ...[...Array(5)].map(_ =>
+            container({
+                borders: true,
+                grow: 1,
+                backgroundColor: palette.background.topbarStandard
+            })(
+                values.showHeaderAs === "custom"
+                    ? dropzone(
+                          dropzone.placeholder("Header widgets"),
+                          dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+                      )(values.headerWidgets)
+                    : container({
+                          padding: 8
+                      })(
+                          text({
+                              bold: true,
+                              fontSize: 10,
+                              fontColor: palette.text.secondary
+                          })(
+                              values.showHeaderAs === "dynamicText"
+                                  ? values.headerTextTemplate ?? "Dynamic text"
+                                  : `[${values.headerAttribute ? values.headerAttribute : "No attribute selected"}]`
+                          )
+                      )
+            )
+        )
+    );
+
+    const customEmptyMessageWidgets =
+        values.showEmptyPlaceholder === "custom"
+            ? [
+                  rowLayout({
+                      columnSize: "fixed",
+                      borders: true
+                  })(
+                      dropzone(
+                          dropzone.placeholder("Empty list message: Place widgets here"),
+                          dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+                      )(values.emptyPlaceholder)
+                  )
+              ]
+            : [];
+
+    return container()(
+        gridTitle,
+        rowLayout({
+            columnSize: "fixed"
+        })(
+            container({
+                borders: true,
+                grow: values.showRowAs !== "none" ? 1 : 0,
+                backgroundColor: palette.background.topbarData
+            })(),
+            container({
+                borders: true,
+                grow: 5
+            })(...(canHideDataSourceHeader ? [datasource(values.dataSourceColumn)()] : []))
+        ),
+        columnHeaders,
+        rowLayout({
+            columnSize: "fixed"
+        })(
+            container({
+                borders: true,
+                grow: values.showRowAs !== "none" ? 1 : 0
+            })(...(canHideDataSourceHeader ? [datasource(values.dataSourceRow)()] : [])),
+            container({
+                borders: true,
+                grow: 5
+            })(...(canHideDataSourceHeader ? [datasource(values.dataSourceCell)()] : []))
+        ),
+        ...Array.from({ length: 5 }).map(() => columns),
+        ...customEmptyMessageWidgets
+    );
+};
