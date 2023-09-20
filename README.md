@@ -4,11 +4,11 @@ Data Grid with variable columns
 **No more nested list views, lightning fast rendering!**
 
 ## Features
-- Data gGid, with variable columns.
+- Data Gid, with variable columns.
 - Render cell content: attribute, text or custom
 - Empty row content message
 - Empty cell objects can be omitted
-- On row click action
+- On click action on row / column / cells
 - Use the default styling of Mendix Data Widget Grid
 - Row and column pagination
 - Structure mode preview
