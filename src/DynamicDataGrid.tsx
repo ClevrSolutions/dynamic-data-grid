@@ -119,6 +119,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             className={classNames(props.class, `mx-name-${props.name}`)}
             style={style}
             renderAs={renderAs}
+            paging={props.paging !== "none"}
             pagination={pagination}
             pagingPosition={props.pagingPosition}
         >

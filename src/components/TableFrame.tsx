@@ -9,6 +9,7 @@ interface TableFrameProps {
     columnCount: number;
     renderAs: RenderAsEnum;
     pagingPosition: PagingPositionEnum;
+    paging: boolean;
     pagination: ReactNode;
 }
 
@@ -18,7 +19,9 @@ export function TableFrame(props: TableFrameProps): ReactElement {
         return (
             <div className={classNames(props.className, "widget-dynamic-data-grid")} style={props.style}>
                 <div className="table-header">
-                    {(props.pagingPosition === "top" || props.pagingPosition === "both") && props.pagination}
+                    {props.paging &&
+                        (props.pagingPosition === "top" || props.pagingPosition === "both") &&
+                        props.pagination}
                 </div>
                 <div className="table" role="table">
                     <div className="table-content" role="rowgroup" style={rowStyle}>
@@ -26,7 +29,9 @@ export function TableFrame(props: TableFrameProps): ReactElement {
                     </div>
                 </div>
                 <div className="table-footer">
-                    {(props.pagingPosition === "bottom" || props.pagingPosition === "both") && props.pagination}
+                    {props.paging &&
+                        (props.pagingPosition === "bottom" || props.pagingPosition === "both") &&
+                        props.pagination}
                 </div>
             </div>
         );
