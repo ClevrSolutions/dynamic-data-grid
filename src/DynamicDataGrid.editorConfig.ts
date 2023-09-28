@@ -270,7 +270,7 @@ export const getPreview = (
     })(
         container({
             padding: 4
-        })(text({ fontColor: palette.text.data })("Dynamic Data Grid"))
+        })(text({ fontColor: palette.text.data })("Dynamic data grid"))
     );
 
     const columnHeaders = rowLayout({
