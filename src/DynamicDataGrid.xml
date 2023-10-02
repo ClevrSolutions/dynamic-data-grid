@@ -68,6 +68,18 @@
                         <enumerationValue key="custom">Custom content</enumerationValue>
                     </enumerationValues>
                 </property>
+                <property key="showRowColumnNameAs" type="enumeration" defaultValue="dynamicText">
+                    <caption>Show row header</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="dynamicText">Dynamic text</enumerationValue>
+                        <enumerationValue key="custom">Custom content</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="rowColumnNameWidgets" type="widgets">
+                    <caption>Row column content</caption>
+                    <description />
+                </property>
                 <property key="rowColumnNameTextTemplate" required="false" type="textTemplate" multiline="false">
                     <caption>Row column header</caption>
                     <description />

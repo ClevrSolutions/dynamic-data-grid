@@ -24,7 +24,7 @@ function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps
 }
 
 export function Headers(props: DynamicDataGridContainerProps): ReactElement {
-    const { dataSourceColumn, showRowAs } = props;
+    const { dataSourceColumn, showRowAs, showRowColumnNameAs, rowColumnNameWidgets } = props;
     const { columnClass, onClickColumnHeader, onClickColumn, rowColumnNameTextTemplate, renderAs } = props;
 
     const headers =
@@ -47,7 +47,8 @@ export function Headers(props: DynamicDataGridContainerProps): ReactElement {
             );
         }) ?? [];
     if (showRowAs !== "none") {
-        const columnName = rowColumnNameTextTemplate?.value ?? "";
+        const columnName =
+            showRowColumnNameAs === "dynamicText" ? rowColumnNameTextTemplate?.value ?? "" : rowColumnNameWidgets;
         headers?.unshift(
             <Header key="row_header" renderAs={renderAs}>
                 {columnName}

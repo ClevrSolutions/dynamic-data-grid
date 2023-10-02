@@ -10,6 +10,8 @@ export type ShowCellAsEnum = "attribute" | "dynamicText" | "custom";
 
 export type ShowRowAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
+export type ShowRowColumnNameAsEnum = "dynamicText" | "custom";
+
 export type ShowHeaderAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
 export type RenderAsEnum = "grid" | "table";
@@ -34,6 +36,8 @@ export interface DynamicDataGridContainerProps {
     referenceRow: ListReferenceValue;
     dataSourceRow: ListValue;
     showRowAs: ShowRowAsEnum;
+    showRowColumnNameAs: ShowRowColumnNameAsEnum;
+    rowColumnNameWidgets: ReactNode;
     rowColumnNameTextTemplate?: DynamicValue<string>;
     rowWidgets: ListWidgetValue;
     rowTextTemplate: ListExpressionValue<string>;
@@ -78,6 +82,8 @@ export interface DynamicDataGridPreviewProps {
     referenceRow: string;
     dataSourceRow: {} | { caption: string } | { type: string } | null;
     showRowAs: ShowRowAsEnum;
+    showRowColumnNameAs: ShowRowColumnNameAsEnum;
+    rowColumnNameWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowColumnNameTextTemplate: string;
     rowWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowTextTemplate: string;

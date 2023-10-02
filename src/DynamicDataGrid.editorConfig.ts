@@ -187,6 +187,12 @@ export function getProperties(
         hidePropertiesIn(defaultProperties, values, ["pageCell"]);
         hidePropertiesIn(defaultProperties, values, ["pagingPosition"]);
     }
+    if (values.showRowColumnNameAs === "custom") {
+        hidePropertiesIn(defaultProperties, values, ["rowColumnNameTextTemplate"]);
+    }
+    if (values.showRowColumnNameAs === "dynamicText") {
+        hidePropertiesIn(defaultProperties, values, ["rowColumnNameWidgets"]);
+    }
     return defaultProperties;
 }
 
@@ -282,15 +288,20 @@ export const getPreview = (
                   grow: values.showHeaderAs !== "none" ? 1 : 0,
                   backgroundColor: palette.background.topbarStandard
               })(
-                  container({
-                      padding: 8
-                  })(
-                      text({
-                          bold: true,
-                          fontSize: 10,
-                          fontColor: palette.text.secondary
-                      })(values.rowColumnNameTextTemplate ?? "Dynamic text")
-                  )
+                  values.showRowColumnNameAs === "custom"
+                      ? dropzone(
+                            dropzone.placeholder("Row column name widgets"),
+                            dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+                        )(values.rowColumnNameWidgets)
+                      : container({
+                            padding: 8
+                        })(
+                            text({
+                                bold: true,
+                                fontSize: 10,
+                                fontColor: palette.text.secondary
+                            })(values.rowColumnNameTextTemplate ?? "Dynamic text")
+                        )
               )
             : container({
                   grow: 0
