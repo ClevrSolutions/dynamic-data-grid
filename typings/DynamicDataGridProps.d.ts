@@ -4,7 +4,8 @@
  * @author Mendix Widgets Framework Team
  */
 import { ComponentType, CSSProperties, ReactNode } from "react";
-import { DynamicValue, ListValue, ListActionValue, ListAttributeValue, ListExpressionValue, ListReferenceValue, ListWidgetValue } from "mendix";
+import { DynamicValue, ListValue, ListActionValue, ListAttributeValue, ListExpressionValue, ListReferenceValue, ListReferenceSetValue, ListWidgetValue } from "mendix";
+import { Big } from "big.js";
 
 export type ShowCellAsEnum = "attribute" | "dynamicText" | "custom";
 
@@ -21,6 +22,34 @@ export type PagingEnum = "none" | "row" | "column";
 export type PagingPositionEnum = "bottom" | "top" | "both";
 
 export type ShowEmptyPlaceholderEnum = "none" | "custom";
+
+export type FilterDataSourceEnum = "row" | "column" | "cell";
+
+export interface FiltersType {
+    filterDataSource: FilterDataSourceEnum;
+    rowAttribute?: ListAttributeValue<string | Big | boolean | Date>;
+    columnAttribute?: ListAttributeValue<string | Big | boolean | Date>;
+    cellAttribute?: ListAttributeValue<string | Big | boolean | Date>;
+    filter?: ReactNode;
+    rowFilterAssociation?: ListReferenceValue | ListReferenceSetValue;
+    columnFilterAssociation?: ListReferenceValue | ListReferenceSetValue;
+    cellFilterAssociation?: ListReferenceValue | ListReferenceSetValue;
+    filterAssociationOptions?: ListValue;
+    filterAssociationOptionLabel?: ListExpressionValue<string>;
+}
+
+export interface FiltersPreviewType {
+    filterDataSource: FilterDataSourceEnum;
+    rowAttribute: string;
+    columnAttribute: string;
+    cellAttribute: string;
+    filter: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    rowFilterAssociation: string;
+    columnFilterAssociation: string;
+    cellFilterAssociation: string;
+    filterAssociationOptions: {} | { caption: string } | { type: string } | null;
+    filterAssociationOptionLabel: string;
+}
 
 export interface DynamicDataGridContainerProps {
     name: string;
@@ -62,6 +91,7 @@ export interface DynamicDataGridContainerProps {
     pageSize: number;
     pageCell: boolean;
     showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
+    filters: FiltersType[];
 }
 
 export interface DynamicDataGridPreviewProps {
@@ -108,4 +138,5 @@ export interface DynamicDataGridPreviewProps {
     pageSize: number | null;
     pageCell: boolean;
     showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
+    filters: FiltersPreviewType[];
 }

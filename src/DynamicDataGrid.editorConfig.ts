@@ -1,5 +1,5 @@
 import { DynamicDataGridPreviewProps } from "../typings/DynamicDataGridProps";
-import { hidePropertiesIn } from "@mendix/pluggable-widgets-tools";
+import { hidePropertiesIn, hidePropertyIn, hideNestedPropertiesIn } from "@mendix/pluggable-widgets-tools";
 
 import {
     container,
@@ -193,6 +193,37 @@ export function getProperties(
     if (values.showRowColumnNameAs === "dynamicText") {
         hidePropertiesIn(defaultProperties, values, ["rowColumnNameWidgets"]);
     }
+    values.filters.forEach((filter, index) => {
+        if (filter.filterDataSource === "row") {
+            hidePropertyIn(defaultProperties, values, "filters", index, "columnAttribute");
+            hidePropertyIn(defaultProperties, values, "filters", index, "cellAttribute");
+
+            hidePropertyIn(defaultProperties, values, "filters", index, "columnFilterAssociation");
+            hidePropertyIn(defaultProperties, values, "filters", index, "cellFilterAssociation");
+        }
+        if (filter.filterDataSource === "column") {
+            hidePropertyIn(defaultProperties, values, "filters", index, "rowAttribute");
+            hidePropertyIn(defaultProperties, values, "filters", index, "cellAttribute");
+
+            hidePropertyIn(defaultProperties, values, "filters", index, "rowFilterAssociation");
+            hidePropertyIn(defaultProperties, values, "filters", index, "cellFilterAssociation");
+        }
+        if (filter.filterDataSource === "cell") {
+            hidePropertyIn(defaultProperties, values, "filters", index, "rowAttribute");
+            hidePropertyIn(defaultProperties, values, "filters", index, "columnAttribute");
+
+            hidePropertyIn(defaultProperties, values, "filters", index, "rowFilterAssociation");
+            hidePropertyIn(defaultProperties, values, "filters", index, "columnFilterAssociation");
+        }
+
+        if (!filter.rowFilterAssociation && !filter.columnFilterAssociation && !filter.cellFilterAssociation) {
+            hideNestedPropertiesIn(defaultProperties, values, "filters", index, [
+                "filterAssociationOptions",
+                "filterAssociationOptionLabel"
+            ]);
+        }
+    });
+
     return defaultProperties;
 }
 
@@ -279,6 +310,18 @@ export const getPreview = (
         })(text({ fontColor: palette.text.data })("Dynamic data grid"))
     );
 
+    const filters = container({
+        borders: true,
+        backgroundColor: palette.background.topbarStandard
+    })(
+        ...values.filters.map(filter =>
+            dropzone(
+                dropzone.placeholder(filter.filterDataSource + " filter"),
+                dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+            )(filter.filter)
+        )
+    );
+
     const columnHeaders = rowLayout({
         columnSize: "fixed"
     })(
@@ -301,7 +344,8 @@ export const getPreview = (
                                 fontSize: 10,
                                 fontColor: palette.text.secondary
                             })(values.rowColumnNameTextTemplate ?? "Dynamic text")
-                        )
+                        ),
+                  filters
               )
             : container({
                   grow: 0

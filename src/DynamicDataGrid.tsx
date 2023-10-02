@@ -1,7 +1,12 @@
-import { ReactElement, createElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, createElement, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
+import { FilterCondition } from "mendix/filters";
+import { and } from "mendix/filters/builders";
+import { FilterType, FilterFunction, useFilterContext, useMultipleFiltering } from "./widget-plugin-filtering/main";
+import { extractFilters } from "./features/filters";
+import { getColumnAssociationProps } from "./features/column";
 
-import { Headers } from "./components/Headers";
+import { Headers, FilterRenderer } from "./components/Headers";
 import { Row } from "./components/Row";
 import { TableFrame } from "./components/TableFrame";
 import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
@@ -20,6 +25,10 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             ? props.dataSourceRow.offset / props.pageSize
             : props.dataSourceColumn.offset / props.pageSize;
     const [loading, setLoading] = useState(true);
+    const viewStateFilters = useRef<FilterCondition | undefined>(undefined);
+    const [filtered, setFiltered] = useState(false);
+    const multipleFilteringState = useMultipleFiltering();
+    const { FilterContext } = useFilterContext();
 
     useEffect(() => {
         if (props.dataSourceCell.status === "available" && props.dataSourceCell.limit !== 0) {
@@ -41,6 +50,35 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             }
         }
     }, [props.dataSourceRow, props.dataSourceColumn, props.pageSize, props.paging]);
+
+    useEffect(() => {
+        if (props.dataSourceRow.filter && !filtered && !viewStateFilters.current) {
+            viewStateFilters.current = props.dataSourceRow.filter;
+        }
+    }, [props.dataSourceRow, filtered]);
+
+    // TODO: Rewrite this logic with single useReducer (or write
+    // custom hook that will use useReducer)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const customFiltersState = props.filters.map(() => useState<FilterFunction>());
+
+    const filters = customFiltersState
+        .map(([customFilter]) => customFilter?.getFilterCondition?.())
+        .filter((filter): filter is FilterCondition => filter !== undefined)
+        .concat(
+            // Concatenating multiple filter state
+            Object.keys(multipleFilteringState)
+                .map((key: FilterType) => multipleFilteringState[key][0]?.getFilterCondition())
+                .filter((filter): filter is FilterCondition => filter !== undefined)
+        );
+
+    if (filters.length > 0) {
+        props.dataSourceRow.setFilter(filters.length > 1 ? and(...filters) : filters[0]);
+    } else if (filtered) {
+        props.dataSourceRow.setFilter(undefined);
+    } else {
+        props.dataSourceRow.setFilter(viewStateFilters.current);
+    }
 
     useEffect(() => {
         const length =
@@ -113,6 +151,38 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             />
         );
 
+    const filterRenderer: FilterRenderer = useCallback(
+        (renderWrapper, filterIndex) => {
+            const column = props.filters[filterIndex];
+            const { rowAttribute, filter } = column;
+            const associationProps = getColumnAssociationProps(column);
+            const [, filterDispatcher] = customFiltersState[filterIndex];
+            const initialFilters = extractFilters(rowAttribute, viewStateFilters.current);
+
+            if (!rowAttribute && !associationProps) {
+                return renderWrapper(filter);
+            }
+
+            return renderWrapper(
+                <FilterContext.Provider
+                    value={{
+                        filterDispatcher: prev => {
+                            setFiltered(true);
+                            filterDispatcher(prev);
+                            return prev;
+                        },
+                        singleAttribute: rowAttribute,
+                        singleInitialFilter: initialFilters,
+                        associationProperties: associationProps
+                    }}
+                >
+                    {filter}
+                </FilterContext.Provider>
+            );
+        },
+        [FilterContext, customFiltersState, props.filters]
+    );
+
     return (
         <TableFrame
             columnCount={columnCount}
@@ -125,7 +195,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
         >
             {showHeaderAs !== "none" && (
                 <Row key="header" renderAs={renderAs}>
-                    {<Headers {...props} />}
+                    {<Headers {...props} filterRenderer={filterRenderer} />}
                 </Row>
             )}
             {rows.map((row, rowIndex) => (

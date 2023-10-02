@@ -1,7 +1,11 @@
-import { createElement, ReactNode, ReactElement, Fragment } from "react";
+import { createElement, ReactNode, ReactElement, Fragment, useCallback } from "react";
 import { ObjectItem } from "mendix";
 import { Header } from "./Header";
 import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
+
+interface HeadersProps extends DynamicDataGridContainerProps {
+    filterRenderer: FilterRenderer;
+}
 
 function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps): ReactNode {
     const { headerAttribute, headerWidgets, headerTextTemplate, showHeaderAs } = props;
@@ -23,9 +27,21 @@ function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps
     return value;
 }
 
-export function Headers(props: DynamicDataGridContainerProps): ReactElement {
-    const { dataSourceColumn, showRowAs, showRowColumnNameAs, rowColumnNameWidgets } = props;
+export type FilterRenderer = (
+    renderWrapper: (children: ReactNode) => ReactElement,
+    filterIndex: number
+) => ReactElement;
+
+export function Headers(props: HeadersProps): ReactElement {
+    const { dataSourceColumn, showRowAs, showRowColumnNameAs, rowColumnNameWidgets, filters } = props;
     const { columnClass, onClickColumnHeader, onClickColumn, rowColumnNameTextTemplate, renderAs } = props;
+    const { filterRenderer: filterRendererProp } = props;
+
+    const filterRenderer = useCallback((children: ReactNode) => <div className="filter">{children}</div>, []);
+
+    const headerSearch = filters.map((_filter, index) => (
+        <div key={index}>{filterRendererProp(filterRenderer, index)}</div>
+    ));
 
     const headers =
         dataSourceColumn.items?.map(column => {
@@ -49,9 +65,11 @@ export function Headers(props: DynamicDataGridContainerProps): ReactElement {
     if (showRowAs !== "none") {
         const columnName =
             showRowColumnNameAs === "dynamicText" ? rowColumnNameTextTemplate?.value ?? "" : rowColumnNameWidgets;
+
         headers?.unshift(
             <Header key="row_header" renderAs={renderAs}>
                 {columnName}
+                {headerSearch}
             </Header>
         );
     }
