@@ -6,7 +6,7 @@ interface CellProps {
     children: ReactNode;
     className?: string;
     key: string;
-    onClick?: () => void;
+    onClick?: (event: React.MouseEvent) => void;
     rowIndex: number;
     renderAs: RenderAsEnum;
 }
@@ -32,7 +32,7 @@ export function Cell(props: CellProps): ReactElement {
                                   props.onClick
                               ) {
                                   e.preventDefault();
-                                  props.onClick();
+                                  props.onClick;
                               }
                           }
                         : undefined
@@ -53,7 +53,7 @@ export function Cell(props: CellProps): ReactElement {
                     ? e => {
                           if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget && props.onClick) {
                               e.preventDefault();
-                              props.onClick();
+                              props.onClick;
                           }
                       }
                     : undefined

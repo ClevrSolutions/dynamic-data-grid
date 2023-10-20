@@ -54,7 +54,7 @@ export function Cells(props: CellsProps): ReactElement {
     const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs, pageCell } = props;
     const { showRowAs, columnClass, cellClass } = props;
     const { row, rowIndex, loading } = props;
-    const { onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
+    const { onClickRow, onDoubleClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
     // potential optimize with hash table?
     const cells =
         dataSourceColumn.items?.map(column => {
@@ -68,14 +68,13 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                 );
             }
 
-            const onClick =
-                cell && onClickCell
-                    ? (): void => onClickCell?.get(cell).execute()
-                    : onClickRow
-                    ? (): void => onClickRow?.get(row).execute()
-                    : onClickColumn
-                    ? (): void => onClickColumn?.get(column).execute()
-                    : undefined;
+            const onClick = (e: React.MouseEvent) =>
+                cell && onClickCell ? onClickCell?.get(cell).execute()
+                : (onClickRow && e.detail === 1) ? onClickRow?.get(row).execute()
+                : (onDoubleClickRow && e.detail === 2) ? onDoubleClickRow?.get(row).execute()
+                : onClickColumn ? onClickColumn?.get(column).execute()
+                : undefined;
+
             const cellClassColumn = columnClass?.get(column).value ?? undefined;
             const cellClassValue = (cell && cellClass?.get(cell).value) ?? undefined;
             return (

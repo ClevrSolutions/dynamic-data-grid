@@ -53,6 +53,7 @@ export interface DynamicDataGridContainerProps {
     columnClass?: ListExpressionValue<string>;
     onClickRowHeader?: ListActionValue;
     onClickRow?: ListActionValue;
+    onDoubleClickRow?: ListActionValue;
     onClickColumnHeader?: ListActionValue;
     onClickColumn?: ListActionValue;
     onClickCell?: ListActionValue;
@@ -99,6 +100,7 @@ export interface DynamicDataGridPreviewProps {
     columnClass: string;
     onClickRowHeader: {} | null;
     onClickRow: {} | null;
+    onDoubleClickRow: {} | null;
     onClickColumnHeader: {} | null;
     onClickColumn: {} | null;
     onClickCell: {} | null;

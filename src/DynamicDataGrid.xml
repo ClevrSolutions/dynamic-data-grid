@@ -176,6 +176,10 @@
                     <caption>On click action</caption>
                     <description />
                 </property>
+                <property key="onDoubleClickRow" type="action" required="false" dataSource="dataSourceRow">
+                    <caption>On double click action</caption>
+                    <description />
+                </property>
             </propertyGroup>
             <propertyGroup caption="Column header">
                 <property key="onClickColumnHeader" type="action" required="false" dataSource="dataSourceColumn">
