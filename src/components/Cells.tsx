@@ -69,11 +69,15 @@ Please make sure your cell sort order and row sort order are matching, and cell 
             }
 
             const onClick = (e: React.MouseEvent) =>
-                cell && onClickCell ? onClickCell?.get(cell).execute()
-                : (onClickRow && e.detail === 1) ? onClickRow?.get(row).execute()
-                : (onDoubleClickRow && e.detail === 2) ? onDoubleClickRow?.get(row).execute()
-                : onClickColumn ? onClickColumn?.get(column).execute()
-                : undefined;
+                cell && onClickCell
+                    ? onClickCell?.get(cell).execute()
+                    : onClickRow && e.detail === 1
+                    ? onClickRow?.get(row).execute()
+                    : onDoubleClickRow && e.detail === 2
+                    ? onDoubleClickRow?.get(row).execute()
+                    : onClickColumn
+                    ? onClickColumn?.get(column).execute()
+                    : undefined;
 
             const cellClassColumn = columnClass?.get(column).value ?? undefined;
             const cellClassValue = (cell && cellClass?.get(cell).value) ?? undefined;
