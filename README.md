@@ -16,6 +16,7 @@ Data Grid with variable columns
 ## Aditional benefits.
 
 -   Choose the default styling of the Data Widget Grid 2 widget, or render it as a plain HTML table without any styling.
+-   Reuse helper classes for DG2 styling; table-bordered-vertical, table-bordered-horizontal, table-bordered-none, table-compact, table-hover, table-striped
 -   Structure mode preview in the Studio Pro. Easy to configure.
 -   Accessible for screen readers.
 -   Small widget <14Kb.
@@ -56,6 +57,64 @@ Technically, you can build it the cases with a list view in a list view, however
 4. Add some Data.
 
 ![widget properties](assets/web.png)
+
+
+## Style
+You have an option for the default styling of the Data Widget Grid 2 widget, or render it as a plain HTML table without any styling.
+
+The helper classes for DG2 styling are available; table-bordered-vertical, table-bordered-horizontal, table-bordered-none, table-compact, table-hover, table-striped
+
+When you want use design properties in your theme. https://docs.mendix.com/apidocs-mxsdk/apidocs/design-properties/#design-properties-definitions
+
+``` json
+{
+    "com.clevr.widget.web.dynamicdatagrid.DynamicDataGrid": [
+        {
+            "name": "Borders",
+            "type": "Dropdown",
+            "description": "Add either a horizontal, vertical separator or both to the cells.",
+            "options": [
+                {
+                    "name": "Both",
+                    "class": "table-bordered-all"
+                },
+                {
+                    "name": "Vertical",
+                    "class": "table-bordered-vertical"
+                },
+                {
+                    "name": "Horizontal",
+                    "class": "table-bordered-horizontal"
+                },
+                {
+                    "name": "None",
+                    "class": "table-bordered-none"
+                }
+            ]
+        },
+        {
+            "name": "Compact",
+            "type": "Toggle",
+            "description": "Change the cell spacing to compact.",
+            "class": "table-compact"
+        },
+        {
+            "name": "Hover",
+            "type": "Toggle",
+            "description": "Highlight a row when hovering over it. Only useful when the row is clickable.",
+            "class": "table-hover"
+        },
+        {
+            "name": "Striped",
+            "type": "Toggle",
+            "description": "Add alternating background colors to rows.",
+            "class": "table-striped"
+        }
+    ]
+}
+
+```
+
 
 ## Notes
 
