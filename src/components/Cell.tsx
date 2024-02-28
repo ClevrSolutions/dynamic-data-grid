@@ -9,13 +9,14 @@ interface CellProps {
     onClick?: () => void;
     rowIndex: number;
     renderAs: RenderAsEnum;
+    isRowHeader: boolean;
 }
 
 export function Cell(props: CellProps): ReactElement {
     if (props.renderAs === "grid") {
         return (
             <div
-                className={classNames("td", props.className, {
+                className={classNames({ td: props.isRowHeader === false }, { th: props.isRowHeader }, props.className, {
                     "td-borders": props.rowIndex === 0,
                     clickable: !!props.onClick
                 })}
@@ -41,25 +42,55 @@ export function Cell(props: CellProps): ReactElement {
                 {props.children}
             </div>
         );
-    }
-    return (
-        <td
-            className={props.className}
-            key={props.key}
-            onClick={props.onClick}
-            tabIndex={props.onClick ? 0 : undefined}
-            onKeyDown={
-                props.onClick
-                    ? e => {
-                          if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget && props.onClick) {
-                              e.preventDefault();
-                              props.onClick();
+    } else if (props.isRowHeader) {
+        return (
+            <th
+                className={props.className}
+                key={props.key}
+                onClick={props.onClick}
+                tabIndex={props.onClick ? 0 : undefined}
+                onKeyDown={
+                    props.onClick
+                        ? e => {
+                              if (
+                                  (e.key === "Enter" || e.key === " ") &&
+                                  e.target === e.currentTarget &&
+                                  props.onClick
+                              ) {
+                                  e.preventDefault();
+                                  props.onClick();
+                              }
                           }
-                      }
-                    : undefined
-            }
-        >
-            {props.children}
-        </td>
-    );
+                        : undefined
+                }
+            >
+                {props.children}
+            </th>
+        );
+    } else {
+        return (
+            <td
+                className={props.className}
+                key={props.key}
+                onClick={props.onClick}
+                tabIndex={props.onClick ? 0 : undefined}
+                onKeyDown={
+                    props.onClick
+                        ? e => {
+                              if (
+                                  (e.key === "Enter" || e.key === " ") &&
+                                  e.target === e.currentTarget &&
+                                  props.onClick
+                              ) {
+                                  e.preventDefault();
+                                  props.onClick();
+                              }
+                          }
+                        : undefined
+                }
+            >
+                {props.children}
+            </td>
+        );
+    }
 }

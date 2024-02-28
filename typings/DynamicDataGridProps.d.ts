@@ -44,6 +44,7 @@ export interface DynamicDataGridContainerProps {
     rowAttribute: ListAttributeValue<string>;
     emptyPlaceholder: ReactNode;
     rowClass?: ListExpressionValue<string>;
+    isRowHeader: ListExpressionValue<boolean>;
     referenceColumn: ListReferenceValue;
     dataSourceColumn: ListValue;
     showHeaderAs: ShowHeaderAsEnum;
@@ -90,6 +91,7 @@ export interface DynamicDataGridPreviewProps {
     rowAttribute: string;
     emptyPlaceholder: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowClass: string;
+    isRowHeader: string;
     referenceColumn: string;
     dataSourceColumn: {} | { caption: string } | { type: string } | null;
     showHeaderAs: ShowHeaderAsEnum;

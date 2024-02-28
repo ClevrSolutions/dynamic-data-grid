@@ -85,6 +85,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                     onClick={onClick}
                     rowIndex={rowIndex}
                     renderAs={renderAs}
+                    isRowHeader={false}
                 >
                     {getCellValue(props, cell)}
                 </Cell>
@@ -97,7 +98,13 @@ Please make sure your cell sort order and row sort order are matching, and cell 
             ? (): void => onClickRow?.get(row).execute()
             : undefined;
         cells.unshift(
-            <Cell key={`row_${row.id}_cell_header`} onClick={onClick} rowIndex={rowIndex} renderAs={renderAs}>
+            <Cell
+                key={`row_${row.id}_cell_header`}
+                onClick={onClick}
+                rowIndex={rowIndex}
+                renderAs={renderAs}
+                isRowHeader={props.isRowHeader.get(row).value as boolean}
+            >
                 {getRowHeaderValue(props, row)}
             </Cell>
         );

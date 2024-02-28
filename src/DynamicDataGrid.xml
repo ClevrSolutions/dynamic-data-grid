@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<widget id="com.clevr.widget.web.dynamicdatagrid.DynamicDataGrid" pluginWidget="true" needsEntityContext="true" offlineCapable="true" supportedPlatform="Web" xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.clevr.widget.web.dynamicdatagrid.DynamicDataGrid" pluginWidget="true"
+    needsEntityContext="true" offlineCapable="true" supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
     <name>Dynamic data grid</name>
     <description />
     <studioProCategory>Data containers</studioProCategory>
@@ -25,7 +28,8 @@
                     <caption>Cell content</caption>
                     <description />
                 </property>
-                <property key="cellTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceCell">
+                <property key="cellTextTemplate" type="textTemplate" multiline="false"
+                    dataSource="dataSourceCell">
                     <caption>Dyanmic text</caption>
                     <description />
                     <translations>
@@ -39,7 +43,8 @@
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
-                <property key="cellClass" type="expression" required="false" dataSource="dataSourceCell">
+                <property key="cellClass" type="expression" required="false"
+                    dataSource="dataSourceCell">
                     <caption>Dynamic class</caption>
                     <description />
                     <returnType type="String" />
@@ -47,7 +52,8 @@
             </propertyGroup>
 
             <propertyGroup caption="Row">
-                <property key="referenceRow" type="association" selectableObjects="dataSourceRow" dataSource="dataSourceCell">
+                <property key="referenceRow" type="association" selectableObjects="dataSourceRow"
+                    dataSource="dataSourceCell">
                     <caption>Reference</caption>
                     <description />
                     <associationTypes>
@@ -80,7 +86,8 @@
                     <caption>Row column content</caption>
                     <description />
                 </property>
-                <property key="rowColumnNameTextTemplate" required="false" type="textTemplate" multiline="false">
+                <property key="rowColumnNameTextTemplate" required="false" type="textTemplate"
+                    multiline="false">
                     <caption>Row column header</caption>
                     <description />
                     <translations>
@@ -91,7 +98,8 @@
                     <caption>Row header content</caption>
                     <description />
                 </property>
-                <property key="rowTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceRow">
+                <property key="rowTextTemplate" type="textTemplate" multiline="false"
+                    dataSource="dataSourceRow">
                     <caption>Dyanmic text</caption>
                     <description />
                     <translations>
@@ -109,15 +117,23 @@
                     <caption>Empty placeholder</caption>
                     <description />
                 </property>
-                <property key="rowClass" type="expression" required="false" dataSource="dataSourceRow">
+                <property key="rowClass" type="expression" required="false"
+                    dataSource="dataSourceRow">
                     <caption>Dynamic class</caption>
                     <description />
                     <returnType type="String" />
                 </property>
+                <property key="isRowHeader" type="expression" required="true"
+                    dataSource="dataSourceRow" defaultValue="false">
+                    <caption>Is row header?</caption>
+                    <description />
+                    <returnType type="Boolean" />
+                </property>
             </propertyGroup>
 
             <propertyGroup caption="Column">
-                <property key="referenceColumn" type="association" selectableObjects="dataSourceColumn" dataSource="dataSourceCell">
+                <property key="referenceColumn" type="association"
+                    selectableObjects="dataSourceColumn" dataSource="dataSourceCell">
                     <caption>Reference</caption>
                     <description />
                     <associationTypes>
@@ -149,14 +165,16 @@
                     <caption>Header content</caption>
                     <description />
                 </property>
-                <property key="headerTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceColumn">
+                <property key="headerTextTemplate" type="textTemplate" multiline="false"
+                    dataSource="dataSourceColumn">
                     <caption>Dyanmic text</caption>
                     <description />
                     <translations>
                         <translation lang="en_US" />
                     </translations>
                 </property>
-                <property key="columnClass" type="expression" required="false" dataSource="dataSourceColumn">
+                <property key="columnClass" type="expression" required="false"
+                    dataSource="dataSourceColumn">
                     <caption>Dynamic class</caption>
                     <description />
                     <returnType type="String" />
@@ -166,7 +184,8 @@
 
         <propertyGroup caption="Events">
             <propertyGroup caption="Row header">
-                <property key="onClickRowHeader" type="action" required="false" dataSource="dataSourceRow">
+                <property key="onClickRowHeader" type="action" required="false"
+                    dataSource="dataSourceRow">
                     <caption>On click action</caption>
                     <description />
                 </property>
@@ -178,19 +197,22 @@
                 </property>
             </propertyGroup>
             <propertyGroup caption="Column header">
-                <property key="onClickColumnHeader" type="action" required="false" dataSource="dataSourceColumn">
+                <property key="onClickColumnHeader" type="action" required="false"
+                    dataSource="dataSourceColumn">
                     <caption>On click action</caption>
                     <description />
                 </property>
             </propertyGroup>
             <propertyGroup caption="Column">
-                <property key="onClickColumn" type="action" required="false" dataSource="dataSourceColumn">
+                <property key="onClickColumn" type="action" required="false"
+                    dataSource="dataSourceColumn">
                     <caption>On click action</caption>
                     <description />
                 </property>
             </propertyGroup>
             <propertyGroup caption="Cell">
-                <property key="onClickCell" type="action" required="false" dataSource="dataSourceCell">
+                <property key="onClickCell" type="action" required="false"
+                    dataSource="dataSourceCell">
                     <caption>On click action</caption>
                     <description />
                 </property>
