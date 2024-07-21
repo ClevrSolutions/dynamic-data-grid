@@ -43,7 +43,30 @@ function getRowHeaderValue(props: DynamicDataGridContainerProps, row?: ObjectIte
 
     return value;
 }
+function cellTooltipValue(props: DynamicDataGridContainerProps, cell?: ObjectItem): string {
+    const { tooltipCell } = props;
+    let value = "";
 
+    if (!cell) {
+        return "\u00A0";
+    } else {
+        value = tooltipCell?.get(cell)?.value ?? "\u00A0";
+    }
+
+    return value;
+}
+function rowTooltipValue(props: DynamicDataGridContainerProps, Row?: ObjectItem): string {
+    const { tooltipRow } = props;
+    let value = "";
+
+    if (!Row) {
+        return "\u00A0";
+    } else {
+        value = tooltipRow?.get(Row)?.value ?? "\u00A0";
+    }
+
+    return value;
+}
 interface CellsProps extends DynamicDataGridContainerProps {
     row: ObjectItem;
     rowIndex: number;
@@ -85,6 +108,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                     onClick={onClick}
                     rowIndex={rowIndex}
                     renderAs={renderAs}
+                    tooltipText={cellTooltipValue(props, cell)}
                 >
                     {getCellValue(props, cell)}
                 </Cell>
@@ -97,7 +121,13 @@ Please make sure your cell sort order and row sort order are matching, and cell 
             ? (): void => onClickRow?.get(row).execute()
             : undefined;
         cells.unshift(
-            <Cell key={`row_${row.id}_cell_header`} onClick={onClick} rowIndex={rowIndex} renderAs={renderAs}>
+            <Cell
+                key={`row_${row.id}_cell_header`}
+                onClick={onClick}
+                rowIndex={rowIndex}
+                renderAs={renderAs}
+                tooltipText={rowTooltipValue(props, row)}
+            >
                 {getRowHeaderValue(props, row)}
             </Cell>
         );

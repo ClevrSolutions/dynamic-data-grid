@@ -39,6 +39,10 @@
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
+                <property key="tooltipCell" type="textTemplate" required="false" dataSource="dataSourceCell">
+                    <caption>Tooltip</caption>
+                    <description />
+                </property>
                 <property key="cellClass" type="expression" required="false" dataSource="dataSourceCell">
                     <caption>Dynamic class</caption>
                     <description />
@@ -105,6 +109,10 @@
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
+                <property key="tooltipRow" type="textTemplate" required="false" dataSource="dataSourceRow">
+                    <caption>Tooltip</caption>
+                    <description />
+                </property>
                 <property key="emptyPlaceholder" type="widgets">
                     <caption>Empty placeholder</caption>
                     <description />
@@ -126,6 +134,10 @@
                 </property>
                 <property key="dataSourceColumn" type="datasource" isList="true">
                     <caption>Data source</caption>
+                    <description />
+                </property>
+                <property key="tooltipColumn" type="textTemplate" required="false" dataSource="dataSourceColumn">
+                    <caption>Tooltip</caption>
                     <description />
                 </property>
                 <property key="showHeaderAs" type="enumeration" defaultValue="attribute">

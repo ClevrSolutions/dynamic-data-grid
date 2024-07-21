@@ -32,6 +32,7 @@ export interface DynamicDataGridContainerProps {
     cellWidgets: ListWidgetValue;
     cellTextTemplate: ListExpressionValue<string>;
     cellAttribute: ListAttributeValue<string>;
+    tooltipCell?: ListExpressionValue<string>;
     cellClass?: ListExpressionValue<string>;
     referenceRow: ListReferenceValue;
     dataSourceRow: ListValue;
@@ -42,10 +43,12 @@ export interface DynamicDataGridContainerProps {
     rowWidgets: ListWidgetValue;
     rowTextTemplate: ListExpressionValue<string>;
     rowAttribute: ListAttributeValue<string>;
+    tooltipRow?: ListExpressionValue<string>;
     emptyPlaceholder: ReactNode;
     rowClass?: ListExpressionValue<string>;
     referenceColumn: ListReferenceValue;
     dataSourceColumn: ListValue;
+    tooltipColumn?: ListExpressionValue<string>;
     showHeaderAs: ShowHeaderAsEnum;
     headerAttribute: ListAttributeValue<string>;
     headerWidgets: ListWidgetValue;
@@ -78,6 +81,7 @@ export interface DynamicDataGridPreviewProps {
     cellWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     cellTextTemplate: string;
     cellAttribute: string;
+    tooltipCell: string;
     cellClass: string;
     referenceRow: string;
     dataSourceRow: {} | { caption: string } | { type: string } | null;
@@ -88,10 +92,12 @@ export interface DynamicDataGridPreviewProps {
     rowWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowTextTemplate: string;
     rowAttribute: string;
+    tooltipRow: string;
     emptyPlaceholder: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowClass: string;
     referenceColumn: string;
     dataSourceColumn: {} | { caption: string } | { type: string } | null;
+    tooltipColumn: string;
     showHeaderAs: ShowHeaderAsEnum;
     headerAttribute: string;
     headerWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };

@@ -22,6 +22,18 @@ function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps
 
     return value;
 }
+function tooltipValue(column: ObjectItem, props: DynamicDataGridContainerProps): string {
+    const { tooltipColumn } = props;
+    let value = "";
+
+    if (!column) {
+        return "\u00A0";
+    } else {
+        value = tooltipColumn?.get(column)?.value ?? "\u00A0";
+    }
+
+    return value;
+}
 
 export function Headers(props: DynamicDataGridContainerProps): ReactElement {
     const { dataSourceColumn, showRowAs, showRowColumnNameAs, rowColumnNameWidgets } = props;
@@ -41,6 +53,7 @@ export function Headers(props: DynamicDataGridContainerProps): ReactElement {
                     onClick={onClick}
                     key={column.id}
                     renderAs={renderAs}
+                    tooltipText={tooltipValue(column, props)}
                 >
                     {getHeaderValue(column, props)}
                 </Header>

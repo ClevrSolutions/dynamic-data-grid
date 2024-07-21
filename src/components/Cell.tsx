@@ -1,4 +1,4 @@
-import { createElement, ReactNode, ReactElement } from "react";
+import { ReactNode, ReactElement, createElement } from "react";
 import classNames from "classnames";
 import { RenderAsEnum } from "typings/DynamicDataGridProps";
 
@@ -9,6 +9,7 @@ interface CellProps {
     onClick?: () => void;
     rowIndex: number;
     renderAs: RenderAsEnum;
+    tooltipText?: string;
 }
 
 export function Cell(props: CellProps): ReactElement {
@@ -37,6 +38,7 @@ export function Cell(props: CellProps): ReactElement {
                           }
                         : undefined
                 }
+                title={props.tooltipText}
             >
                 {props.children}
             </div>
@@ -58,6 +60,7 @@ export function Cell(props: CellProps): ReactElement {
                       }
                     : undefined
             }
+            title={props.tooltipText}
         >
             {props.children}
         </td>

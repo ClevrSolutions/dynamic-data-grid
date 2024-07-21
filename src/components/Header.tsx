@@ -8,6 +8,7 @@ interface RowHeaderProps {
     key: string;
     onClick?: () => void;
     renderAs: RenderAsEnum;
+    tooltipText?: string;
 }
 
 export function Header(props: RowHeaderProps): ReactElement {
@@ -18,6 +19,7 @@ export function Header(props: RowHeaderProps): ReactElement {
                 role="columnheader"
                 key={props.key}
                 onClick={props.onClick}
+                title={props.tooltipText}
             >
                 <div className="column-container">
                     <div className="column-header align-column-left">{props.children}</div>
