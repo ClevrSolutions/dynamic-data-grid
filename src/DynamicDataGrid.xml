@@ -224,6 +224,7 @@
                     <enumerationValues>
                         <enumerationValue key="grid">Grid</enumerationValue>
                         <enumerationValue key="table">Table</enumerationValue>
+                        <enumerationValue key="virtualized">Virtualized Grid</enumerationValue>
                     </enumerationValues>
                 </property>
                 <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
@@ -266,6 +267,36 @@
                 <property key="pageCell" type="boolean" defaultValue="false">
                     <caption>Optimize cell paging</caption>
                     <description>Only enable when each row/column has a cell, and sorting of the cells and rows/column are are equal. Using data source Database or XPath. Does not support add/deletes.</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Virtualized Grid">
+                <property key="fixedRowCount" type="integer" defaultValue="0">
+                    <caption>Fixed rows</caption>
+                    <description />
+                </property>
+                <property key="fixedColumnCount" type="integer" defaultValue="0">
+                    <caption>Fixed columns</caption>
+                    <description />
+                </property>
+                <property key="gridHeight" type="enumeration" defaultValue="pixels">
+                    <caption>Grid height</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="pixels">Pixels</enumerationValue>
+                        <enumerationValue key="max">Grow max</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="gridHeightPixels" type="integer" defaultValue="300">
+                    <caption>Pixel height</caption>
+                    <description />
+                </property>
+                <property key="columnWidth" type="integer" defaultValue="100">
+                    <caption>Column width</caption>
+                    <description />
+                </property>
+                <property key="rowHeight" type="integer" defaultValue="40">
+                    <caption>Row height</caption>
+                    <description />
                 </property>
             </propertyGroup>
         </propertyGroup>

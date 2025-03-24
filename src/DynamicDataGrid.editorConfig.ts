@@ -177,6 +177,22 @@ export function getProperties(
     if (values.showRowColumnNameAs === "dynamicText") {
         hidePropertiesIn(defaultProperties, values, ["rowColumnNameWidgets"]);
     }
+    if (values.renderAs === "virtualized") {
+        hidePropertiesIn(defaultProperties, values, ["paging", "pageSize", "pageCell", "pagingPosition"]);
+    }
+    if (values.renderAs !== "virtualized") {
+        hidePropertiesIn(defaultProperties, values, [
+            "fixedRowCount",
+            "fixedColumnCount",
+            "gridHeight",
+            "gridHeightPixels",
+            "columnWidth",
+            "rowHeight"
+        ]);
+    }
+    if (values.gridHeight !== "pixels") {
+        hidePropertiesIn(defaultProperties, values, ["gridHeightPixels"]);
+    }
     return defaultProperties;
 }
 

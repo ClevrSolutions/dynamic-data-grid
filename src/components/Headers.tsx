@@ -3,7 +3,7 @@ import { ObjectItem } from "mendix";
 import { Header } from "./Header";
 import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
 
-function getHeaderValue(props: DynamicDataGridContainerProps, column: ObjectItem): ReactNode {
+export function getHeaderValue(props: DynamicDataGridContainerProps, column: ObjectItem): ReactNode {
     const { headerAttribute, headerWidgets, headerTextTemplate, showHeaderAs } = props;
     let value: ReactNode = "";
 

@@ -1,7 +1,9 @@
 import { createElement, ReactNode, ReactElement, Fragment } from "react";
 import classNames from "classnames";
 import { ObjectItem } from "mendix";
+
 import { Cell } from "./Cell";
+import { DataSetMap } from "../DynamicDataGrid";
 import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
 import { Header } from "./Header";
 
@@ -50,7 +52,7 @@ function rowTooltipValue(props: DynamicDataGridContainerProps, row?: ObjectItem)
     return value;
 }
 
-function getRowHeaderValue(props: DynamicDataGridContainerProps, row?: ObjectItem): ReactNode {
+export function getRowHeaderValue(props: DynamicDataGridContainerProps, row?: ObjectItem): ReactNode {
     const { rowAttribute, rowWidgets, rowTextTemplate, showRowAs } = props;
     let value: ReactNode = "";
 
@@ -75,10 +77,11 @@ interface CellsProps extends DynamicDataGridContainerProps {
     rowIndex: number;
     loading: boolean;
     isHeader?: boolean;
+    cellDataset: DataSetMap;
 }
 
 export function Cells(props: CellsProps): ReactElement {
-    const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs, pageCell } = props;
+    const { dataSourceColumn, renderAs, pageCell } = props;
     const { showRowAs, columnClass, cellClass } = props;
     const { row, rowIndex, isHeader, loading } = props;
     const { onClickTrigger, onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
@@ -86,9 +89,8 @@ export function Cells(props: CellsProps): ReactElement {
     // Potential optimize with hash table?
     const cells =
         dataSourceColumn.items?.map(column => {
-            const cell = dataSourceCell.items?.find(
-                i => referenceRow.get(i).value?.id === row.id && referenceColumn.get(i).value?.id === column.id
-            );
+            const rowData = props.cellDataset[row.id];
+            const cell = rowData ? rowData[column.id] : undefined;
             if (pageCell && cell === undefined && !loading) {
                 console.error(
                     `Dynamic Data Grid widget - No cell found for row ${row.id} column ${column.id} while 'Optimize cell paging' is enabled.

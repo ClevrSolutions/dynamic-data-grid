@@ -1,4 +1,4 @@
-import { createElement, ReactNode, ReactElement } from "react";
+import { createElement, ReactNode, ReactElement, CSSProperties } from "react";
 import classNames from "classnames";
 import { OnClickTriggerEnum, RenderAsEnum } from "typings/DynamicDataGridProps";
 
@@ -11,17 +11,19 @@ interface CellProps {
     rowIndex: number;
     renderAs: RenderAsEnum;
     tooltipText?: string;
+    style?: CSSProperties;
 }
 
 export function Cell(props: CellProps): ReactElement {
     const { onClick, clickTrigger, className, key, tooltipText, children, renderAs } = props;
-    if (renderAs === "grid") {
+    if (props.renderAs === "grid" || props.renderAs === "virtualized") {
         return (
             <div
                 className={classNames("td", className, {
                     "td-borders": props.rowIndex === 0,
                     clickable: !!onClick
                 })}
+                style={props.style}
                 key={key}
                 role={onClick ? "button" : "gridcell"}
                 title={tooltipText}
@@ -46,6 +48,7 @@ export function Cell(props: CellProps): ReactElement {
     return (
         <td
             className={className}
+            style={props.style}
             key={key}
             title={tooltipText}
             onClick={clickTrigger === "single" ? onClick : undefined}

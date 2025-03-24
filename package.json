@@ -1,7 +1,7 @@
 {
   "name": "dynamic-data-grid",
   "widgetName": "DynamicDataGrid",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Create a dynamic data grid with variable columns",
   "copyright": "Clevr NL B.V.",
   "author": "Andries Smit",
@@ -16,6 +16,7 @@
   },
   "packagePath": "com.clevr.widget.web",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "pluggable-widgets-tools start:server",
     "dev": "pluggable-widgets-tools start:web",
     "build": "pluggable-widgets-tools build:web",
@@ -26,10 +27,13 @@
   },
   "devDependencies": {
     "@mendix/pluggable-widgets-tools": "^10.15.0",
-    "@types/big.js": "^6.0.2"
+    "@types/big.js": "^6.0.2",
+    "@types/react-virtualized": "^9.21.30",
+    "patch-package": "^8.0.0"
   },
   "dependencies": {
-    "classnames": "^2.2.6"
+    "classnames": "^2.2.6",
+    "react-virtualized": "^9.22.5"
   },
   "resolutions": {
     "react": "^18.2.0",

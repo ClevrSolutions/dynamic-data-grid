@@ -1,5 +1,6 @@
-import { ReactElement, createElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, createElement, useCallback, useEffect, useState, useMemo, useRef } from "react";
 import classNames from "classnames";
+import { ObjectItem } from "mendix";
 
 import { Headers } from "./components/Headers";
 import { Row } from "./components/Row";
@@ -7,14 +8,57 @@ import { TableFrame } from "./components/TableFrame";
 import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
 import { Cells } from "./components/Cells";
 import { Pagination } from "./components/Pagination";
+import { VirtualizedGrid } from "./components/VirtualizedGrid";
 
 import { DynamicDataGridContainerProps } from "../typings/DynamicDataGridProps";
 
 import "./ui/DynamicDataGrid.css";
 
+export interface RowMap {
+    [key: string]: ObjectItem;
+}
+export interface DataSetMap {
+    [key: string]: RowMap;
+}
+
+// TODO use memo, and issue render after loading all items.
+// function getDataSet(props: DynamicDataGridContainerProps): DataSetMap {
+//     const cellDataset: DataSetMap = {};
+//     props.dataSourceCell.items?.forEach(i => {
+//         const rowId = props.referenceRow.get(i).value?.id;
+//         const colId = props.referenceColumn.get(i).value?.id;
+//         if (rowId && colId) {
+//             const row = cellDataset[rowId];
+//             if (row) {
+//                 row[colId] = i;
+//             } else {
+//                 cellDataset[rowId] = { [colId]: i };
+//             }
+//         }
+//     });
+//     return cellDataset;
+// }
+
 export default function DynamicDataGrid(props: DynamicDataGridContainerProps): ReactElement {
-    const { style, showRowAs, rowClass, renderAs, showHeaderAs } = props;
-    const { dataSourceCell, dataSourceColumn, pageSize, pageCell, paging, pagingPosition, dataSourceRow } = props;
+    const { dataSourceCell, pageSize, pageCell, paging, pagingPosition } = props;
+    const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs, showHeaderAs } = props;
+    const gridRef = useRef<any>();
+    const cellDataset = useMemo(() => {
+        const cellDataset: DataSetMap = {};
+        props.dataSourceCell.items?.forEach(i => {
+            const rowId = props.referenceRow.get(i).value?.id;
+            const colId = props.referenceColumn.get(i).value?.id;
+            if (rowId && colId) {
+                const row = cellDataset[rowId];
+                if (row) {
+                    row[colId] = i;
+                } else {
+                    cellDataset[rowId] = { [colId]: i };
+                }
+            }
+        });
+        return cellDataset;
+    }, [props.dataSourceCell.items, props.referenceColumn, props.referenceRow]);
 
     const rows = dataSourceRow.items ?? [];
     const currentPage = paging === "row" ? dataSourceRow.offset / pageSize : dataSourceColumn.offset / pageSize;
@@ -23,8 +67,13 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
     useEffect(() => {
         if (dataSourceCell.status === "available" && dataSourceCell.limit !== 0) {
             setLoading(false);
+            gridRef.current?.forceUpdateGrids();
         }
     }, [dataSourceCell]);
+
+    // useEffect(() => {
+    //     gridRef.current?.forceUpdateGrids();
+    // }, [props.dataSourceCell, props.dataSourceColumn, props.dataSourceColumn]);
 
     useEffect(() => {
         if (paging === "row") {
@@ -66,6 +115,10 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
         },
         [currentPage, dataSourceRow, paging, pageSize, dataSourceColumn, dataSourceCell, pageCell]
     );
+
+    if (renderAs === "virtualized") {
+        return <VirtualizedGrid {...props} cellDataset={cellDataset} setRef={gridRef} />;
+    }
 
     let columnCount = dataSourceColumn.items?.length || 0;
     if (showRowAs !== "none") {
@@ -115,7 +168,14 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                     )}
                     {showHeaderAs === "firstRow" && rows[0] && (
                         <Row key="header" renderAs={renderAs}>
-                            <Cells {...props} row={rows[0]} rowIndex={0} loading={loading} isHeader />
+                            <Cells
+                                {...props}
+                                row={rows[0]}
+                                rowIndex={0}
+                                loading={loading}
+                                cellDataset={cellDataset}
+                                isHeader
+                            />
                         </Row>
                     )}
                 </div>
@@ -127,7 +187,13 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                     }
                     return (
                         <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
-                            <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
+                            <Cells
+                                {...props}
+                                row={row}
+                                rowIndex={rowIndex}
+                                loading={loading}
+                                cellDataset={cellDataset}
+                            />
                         </Row>
                     );
                 })}

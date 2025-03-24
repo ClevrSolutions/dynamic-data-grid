@@ -16,13 +16,15 @@ export type ShowHeaderAsEnum = "none" | "firstRow" | "attribute" | "dynamicText"
 
 export type OnClickTriggerEnum = "single" | "double";
 
-export type RenderAsEnum = "grid" | "table";
+export type RenderAsEnum = "grid" | "table" | "virtualized";
 
 export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
 export type PagingEnum = "none" | "row" | "column";
 
 export type PagingPositionEnum = "bottom" | "top" | "both";
+
+export type GridHeightEnum = "pixels" | "max";
 
 export interface DynamicDataGridContainerProps {
     name: string;
@@ -68,6 +70,12 @@ export interface DynamicDataGridContainerProps {
     pagingPosition: PagingPositionEnum;
     pageSize: number;
     pageCell: boolean;
+    fixedRowCount: number;
+    fixedColumnCount: number;
+    gridHeight: GridHeightEnum;
+    gridHeightPixels: number;
+    columnWidth: number;
+    rowHeight: number;
 }
 
 export interface DynamicDataGridPreviewProps {
@@ -120,4 +128,10 @@ export interface DynamicDataGridPreviewProps {
     pagingPosition: PagingPositionEnum;
     pageSize: number | null;
     pageCell: boolean;
+    fixedRowCount: number | null;
+    fixedColumnCount: number | null;
+    gridHeight: GridHeightEnum;
+    gridHeightPixels: number | null;
+    columnWidth: number | null;
+    rowHeight: number | null;
 }
