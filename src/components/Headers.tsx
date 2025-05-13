@@ -3,7 +3,7 @@ import { ObjectItem } from "mendix";
 import { Header } from "./Header";
 import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
 
-function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps): ReactNode {
+function getHeaderValue(props: DynamicDataGridContainerProps, column: ObjectItem): ReactNode {
     const { headerAttribute, headerWidgets, headerTextTemplate, showHeaderAs } = props;
     let value: ReactNode = "";
 
@@ -18,6 +18,19 @@ function getHeaderValue(column: ObjectItem, props: DynamicDataGridContainerProps
         value = headerWidgets.get(column);
     } else {
         value = "n/a";
+    }
+
+    return value;
+}
+
+function tooltipValue(props: DynamicDataGridContainerProps, column: ObjectItem): string {
+    const { tooltipColumn } = props;
+    let value = "";
+
+    if (!column) {
+        return "\u00A0";
+    } else {
+        value = tooltipColumn?.get(column)?.value ?? "\u00A0";
     }
 
     return value;
@@ -38,11 +51,12 @@ export function Headers(props: DynamicDataGridContainerProps): ReactElement {
             return (
                 <Header
                     className={columnClass?.get(column).value ?? ""}
+                    tooltipText={tooltipValue(props, column)}
                     onClick={onClick}
                     key={column.id}
                     renderAs={renderAs}
                 >
-                    {getHeaderValue(column, props)}
+                    {getHeaderValue(props, column)}
                 </Header>
             );
         }) ?? [];

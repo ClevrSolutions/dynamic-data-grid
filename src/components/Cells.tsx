@@ -25,6 +25,31 @@ export function getCellValue(props: DynamicDataGridContainerProps, cell?: Object
     return value;
 }
 
+function cellTooltipValue(props: DynamicDataGridContainerProps, cell?: ObjectItem): string {
+    const { tooltipCell } = props;
+    let value = "";
+
+    if (!cell) {
+        return "\u00A0";
+    } else {
+        value = tooltipCell?.get(cell)?.value ?? "\u00A0";
+    }
+
+    return value;
+}
+function rowTooltipValue(props: DynamicDataGridContainerProps, row?: ObjectItem): string {
+    const { tooltipRow } = props;
+    let value = "";
+
+    if (!row) {
+        return "\u00A0";
+    } else {
+        value = tooltipRow?.get(row)?.value ?? "\u00A0";
+    }
+
+    return value;
+}
+
 function getRowHeaderValue(props: DynamicDataGridContainerProps, row?: ObjectItem): ReactNode {
     const { rowAttribute, rowWidgets, rowTextTemplate, showRowAs } = props;
     let value: ReactNode = "";
@@ -84,6 +109,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                 return (
                     <Header
                         className={classNames(cellClassColumn, cellClassValue)}
+                        tooltipText={cellTooltipValue(props, cell)}
                         onClick={onClick}
                         key={column.id}
                         renderAs={renderAs}
@@ -96,6 +122,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                 <Cell
                     className={classNames(cellClassColumn, cellClassValue)}
                     key={`row_${row.id}_coll_${column.id}_cell_${cell?.id}`}
+                    tooltipText={cellTooltipValue(props, cell)}
                     onClick={onClick}
                     rowIndex={rowIndex}
                     renderAs={renderAs}
@@ -113,13 +140,24 @@ Please make sure your cell sort order and row sort order are matching, and cell 
             : undefined;
         if (isHeader) {
             cells.unshift(
-                <Header key={`row_${row.id}_cell_header`} onClick={onClick} renderAs={renderAs}>
+                <Header
+                    key={`row_${row.id}_cell_header`}
+                    tooltipText={rowTooltipValue(props, row)}
+                    onClick={onClick}
+                    renderAs={renderAs}
+                >
                     {getRowHeaderValue(props, row)}
                 </Header>
             );
         } else {
             cells.unshift(
-                <Cell key={`row_${row.id}_cell_header`} onClick={onClick} rowIndex={rowIndex} renderAs={renderAs}>
+                <Cell
+                    key={`row_${row.id}_cell_header`}
+                    tooltipText={rowTooltipValue(props, row)}
+                    onClick={onClick}
+                    rowIndex={rowIndex}
+                    renderAs={renderAs}
+                >
                     {getRowHeaderValue(props, row)}
                 </Cell>
             );

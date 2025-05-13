@@ -9,6 +9,7 @@ interface CellProps {
     onClick?: () => void;
     rowIndex: number;
     renderAs: RenderAsEnum;
+    tooltipText?: string;
 }
 
 export function Cell(props: CellProps): ReactElement {
@@ -21,6 +22,7 @@ export function Cell(props: CellProps): ReactElement {
                 })}
                 key={props.key}
                 role={props.onClick ? "button" : "gridcell"}
+                title={props.tooltipText}
                 onClick={props.onClick}
                 tabIndex={props.onClick ? 0 : undefined}
                 onKeyDown={
@@ -46,6 +48,7 @@ export function Cell(props: CellProps): ReactElement {
         <td
             className={props.className}
             key={props.key}
+            title={props.tooltipText}
             onClick={props.onClick}
             tabIndex={props.onClick ? 0 : undefined}
             onKeyDown={
