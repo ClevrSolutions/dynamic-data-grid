@@ -32,6 +32,7 @@ export interface DynamicDataGridContainerProps {
     cellWidgets: ListWidgetValue;
     cellTextTemplate: ListExpressionValue<string>;
     cellAttribute: ListAttributeValue<string>;
+    tooltipCell?: ListExpressionValue<string>;
     cellClass?: ListExpressionValue<string>;
     referenceRow: ListReferenceValue;
     dataSourceRow: ListValue;
@@ -42,6 +43,7 @@ export interface DynamicDataGridContainerProps {
     showRowColumnNameAs: ShowRowColumnNameAsEnum;
     rowColumnNameWidgets: ReactNode;
     rowColumnNameTextTemplate?: DynamicValue<string>;
+    tooltipRow?: ListExpressionValue<string>;
     rowClass?: ListExpressionValue<string>;
     referenceColumn: ListReferenceValue;
     dataSourceColumn: ListValue;
@@ -49,6 +51,7 @@ export interface DynamicDataGridContainerProps {
     headerAttribute: ListAttributeValue<string>;
     headerWidgets: ListWidgetValue;
     headerTextTemplate: ListExpressionValue<string>;
+    tooltipColumn?: ListExpressionValue<string>;
     columnClass?: ListExpressionValue<string>;
     onClickRowHeader?: ListActionValue;
     onClickRow?: ListActionValue;
@@ -78,6 +81,7 @@ export interface DynamicDataGridPreviewProps {
     cellWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     cellTextTemplate: string;
     cellAttribute: string;
+    tooltipCell: string;
     cellClass: string;
     referenceRow: string;
     dataSourceRow: {} | { caption: string } | { type: string } | null;
@@ -88,6 +92,7 @@ export interface DynamicDataGridPreviewProps {
     showRowColumnNameAs: ShowRowColumnNameAsEnum;
     rowColumnNameWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowColumnNameTextTemplate: string;
+    tooltipRow: string;
     rowClass: string;
     referenceColumn: string;
     dataSourceColumn: {} | { caption: string } | { type: string } | null;
@@ -95,6 +100,7 @@ export interface DynamicDataGridPreviewProps {
     headerAttribute: string;
     headerWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     headerTextTemplate: string;
+    tooltipColumn: string;
     columnClass: string;
     onClickRowHeader: {} | null;
     onClickRow: {} | null;

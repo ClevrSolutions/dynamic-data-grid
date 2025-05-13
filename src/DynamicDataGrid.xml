@@ -39,6 +39,10 @@
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
+                <property key="tooltipCell" type="textTemplate" required="false" dataSource="dataSourceCell">
+                    <caption>Tooltip</caption>
+                    <description />
+                </property>
                 <property key="cellClass" type="expression" required="false" dataSource="dataSourceCell">
                     <caption>Dynamic class</caption>
                     <description />
@@ -105,6 +109,10 @@
                         <translation lang="en_US" />
                     </translations>
                 </property>
+                <property key="tooltipRow" type="textTemplate" required="false" dataSource="dataSourceRow">
+                    <caption>Tooltip</caption>
+                    <description />
+                </property>
                 <property key="rowClass" type="expression" required="false" dataSource="dataSourceRow">
                     <caption>Dynamic class</caption>
                     <description />
@@ -152,6 +160,10 @@
                     <translations>
                         <translation lang="en_US" />
                     </translations>
+                </property>
+                <property key="tooltipColumn" type="textTemplate" required="false" dataSource="dataSourceColumn">
+                    <caption>Tooltip</caption>
+                    <description />
                 </property>
                 <property key="columnClass" type="expression" required="false" dataSource="dataSourceColumn">
                     <caption>Dynamic class</caption>
@@ -217,7 +229,7 @@
                     <description />
                 </property>
             </propertyGroup>
-            
+
             <propertyGroup caption="Paging">
                 <property key="paging" type="enumeration" defaultValue="none">
                     <caption>Paging</caption>
@@ -246,7 +258,6 @@
                     <description>Only enable when each row/column has a cell, and sorting of the cells and rows/column are are equal. Using data source Database or XPath. Does not support add/deletes.</description>
                 </property>
             </propertyGroup>
-
         </propertyGroup>
     </properties>
 </widget>
