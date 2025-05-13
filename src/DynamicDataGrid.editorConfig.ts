@@ -132,7 +132,8 @@ export function getProperties(
             "headerAttribute",
             "showRowColumnNameAs",
             "rowColumnNameTextTemplate",
-            "onClickColumnHeader"
+            "onClickColumnHeader",
+            "tooltipColumn"
         ]);
     } else if (values.showHeaderAs === "attribute") {
         hidePropertiesIn(defaultProperties, values, ["headerWidgets", "headerTextTemplate"]);
@@ -157,7 +158,8 @@ export function getProperties(
             "rowWidgets",
             "rowTextTemplate",
             "rowAttribute",
-            "onClickRowHeader"
+            "onClickRowHeader",
+            "tooltipRow"
         ]);
     }
     if (values.onClickColumn !== null) {
