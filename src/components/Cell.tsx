@@ -1,11 +1,12 @@
 import { createElement, ReactNode, ReactElement } from "react";
 import classNames from "classnames";
-import { RenderAsEnum } from "typings/DynamicDataGridProps";
+import { OnClickTriggerEnum, RenderAsEnum } from "typings/DynamicDataGridProps";
 
 interface CellProps {
     children: ReactNode;
     className?: string;
     key: string;
+    clickTrigger: OnClickTriggerEnum;
     onClick?: () => void;
     rowIndex: number;
     renderAs: RenderAsEnum;
@@ -13,56 +14,55 @@ interface CellProps {
 }
 
 export function Cell(props: CellProps): ReactElement {
-    if (props.renderAs === "grid") {
+    const { onClick, clickTrigger, className, key, tooltipText, children, renderAs } = props;
+    if (renderAs === "grid") {
         return (
             <div
-                className={classNames("td", props.className, {
+                className={classNames("td", className, {
                     "td-borders": props.rowIndex === 0,
-                    clickable: !!props.onClick
+                    clickable: !!onClick
                 })}
-                key={props.key}
-                role={props.onClick ? "button" : "gridcell"}
-                title={props.tooltipText}
-                onClick={props.onClick}
-                tabIndex={props.onClick ? 0 : undefined}
+                key={key}
+                role={onClick ? "button" : "gridcell"}
+                title={tooltipText}
+                onClick={clickTrigger === "single" ? onClick : undefined}
+                onDoubleClick={clickTrigger === "double" ? onClick : undefined}
+                tabIndex={onClick ? 0 : undefined}
                 onKeyDown={
-                    props.onClick
+                    onClick
                         ? e => {
-                              if (
-                                  (e.key === "Enter" || e.key === " ") &&
-                                  e.target === e.currentTarget &&
-                                  props.onClick
-                              ) {
+                              if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget && onClick) {
                                   e.preventDefault();
-                                  props.onClick();
+                                  onClick();
                               }
                           }
                         : undefined
                 }
             >
-                {props.children}
+                {children}
             </div>
         );
     }
     return (
         <td
-            className={props.className}
-            key={props.key}
-            title={props.tooltipText}
-            onClick={props.onClick}
-            tabIndex={props.onClick ? 0 : undefined}
+            className={className}
+            key={key}
+            title={tooltipText}
+            onClick={clickTrigger === "single" ? onClick : undefined}
+            onDoubleClick={clickTrigger === "double" ? onClick : undefined}
+            tabIndex={onClick ? 0 : undefined}
             onKeyDown={
-                props.onClick
+                onClick
                     ? e => {
-                          if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget && props.onClick) {
+                          if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget && onClick) {
                               e.preventDefault();
-                              props.onClick();
+                              onClick();
                           }
                       }
                     : undefined
             }
         >
-            {props.children}
+            {children}
         </td>
     );
 }

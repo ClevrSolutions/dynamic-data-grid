@@ -1,40 +1,44 @@
-import { createElement, ReactNode, ReactElement } from "react";
+import { createElement, ReactNode, ReactElement, MouseEvent } from "react";
 import classNames from "classnames";
-import { RenderAsEnum } from "typings/DynamicDataGridProps";
+import { OnClickTriggerEnum, RenderAsEnum } from "typings/DynamicDataGridProps";
 
 interface RowHeaderProps {
     children: ReactNode;
     className?: string;
     key: string;
     tooltipText?: string;
-    onClick?: () => void;
+    clickTrigger?: OnClickTriggerEnum;
+    onClick?: (event?: MouseEvent) => void;
     renderAs: RenderAsEnum;
 }
 
 export function Header(props: RowHeaderProps): ReactElement {
-    if (props.renderAs === "grid") {
+    const { onClick, clickTrigger, className, key, tooltipText, children, renderAs } = props;
+    if (renderAs === "grid") {
         return (
             <div
-                className={classNames("th", props.className, { clickable: !!props.onClick })}
+                className={classNames("th", className, { clickable: !!onClick })}
                 role="columnheader"
-                key={props.key}
-                title={props.tooltipText}
-                onClick={props.onClick}
+                key={key}
+                title={tooltipText}
+                onClick={clickTrigger === "single" ? onClick : undefined}
+                onDoubleClick={clickTrigger === "double" ? onClick : undefined}
             >
                 <div className="column-container">
-                    <div className="column-header align-column-left">{props.children}</div>
+                    <div className="column-header align-column-left">{children}</div>
                 </div>
             </div>
         );
     }
     return (
         <th
-            className={classNames(props.className, { clickable: !!props.onClick })}
-            key={props.key}
-            title={props.tooltipText}
-            onClick={props.onClick}
+            className={classNames(className, { clickable: !!onClick })}
+            key={key}
+            title={tooltipText}
+            onClick={clickTrigger === "single" ? onClick : undefined}
+            onDoubleClick={clickTrigger === "double" ? onClick : undefined}
         >
-            {props.children}
+            {children}
         </th>
     );
 }

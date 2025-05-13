@@ -38,7 +38,7 @@ function tooltipValue(props: DynamicDataGridContainerProps, column: ObjectItem):
 
 export function Headers(props: DynamicDataGridContainerProps): ReactElement {
     const { dataSourceColumn, showRowAs, showRowColumnNameAs, rowColumnNameWidgets } = props;
-    const { columnClass, onClickColumnHeader, onClickColumn, rowColumnNameTextTemplate, renderAs } = props;
+    const { columnClass, onClickTrigger, onClickColumnHeader, onClickColumn, rowColumnNameTextTemplate, renderAs } = props;
 
     const headers =
         dataSourceColumn.items?.map(column => {
@@ -52,6 +52,7 @@ export function Headers(props: DynamicDataGridContainerProps): ReactElement {
                 <Header
                     className={columnClass?.get(column).value ?? ""}
                     tooltipText={tooltipValue(props, column)}
+                    clickTrigger={onClickTrigger}
                     onClick={onClick}
                     key={column.id}
                     renderAs={renderAs}
