@@ -20,7 +20,7 @@ export function Cell(props: CellProps): ReactElement {
                     clickable: !!props.onClick
                 })}
                 key={props.key}
-                role={props.onClick ? "button" : "cell"}
+                role={props.onClick ? "button" : "gridcell"}
                 onClick={props.onClick}
                 tabIndex={props.onClick ? 0 : undefined}
                 onKeyDown={
