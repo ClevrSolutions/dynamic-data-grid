@@ -14,6 +14,8 @@ export type ShowRowColumnNameAsEnum = "dynamicText" | "custom";
 
 export type ShowHeaderAsEnum = "none" | "firstRow" | "attribute" | "dynamicText" | "custom";
 
+export type OnClickTriggerEnum = "single" | "double";
+
 export type RenderAsEnum = "grid" | "table";
 
 export type ShowEmptyPlaceholderEnum = "none" | "custom";
@@ -53,6 +55,7 @@ export interface DynamicDataGridContainerProps {
     headerTextTemplate: ListExpressionValue<string>;
     tooltipColumn?: ListExpressionValue<string>;
     columnClass?: ListExpressionValue<string>;
+    onClickTrigger: OnClickTriggerEnum;
     onClickRowHeader?: ListActionValue;
     onClickRow?: ListActionValue;
     onClickColumnHeader?: ListActionValue;
@@ -102,6 +105,7 @@ export interface DynamicDataGridPreviewProps {
     headerTextTemplate: string;
     tooltipColumn: string;
     columnClass: string;
+    onClickTrigger: OnClickTriggerEnum;
     onClickRowHeader: {} | null;
     onClickRow: {} | null;
     onClickColumnHeader: {} | null;

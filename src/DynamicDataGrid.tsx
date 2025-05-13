@@ -13,75 +13,58 @@ import { DynamicDataGridContainerProps } from "../typings/DynamicDataGridProps";
 import "./ui/DynamicDataGrid.css";
 
 export default function DynamicDataGrid(props: DynamicDataGridContainerProps): ReactElement {
-    const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, renderAs, showHeaderAs } = props;
+    const { style, showRowAs, rowClass, renderAs, showHeaderAs } = props;
+    const { dataSourceCell, dataSourceColumn, pageSize, pageCell, paging, pagingPosition, dataSourceRow } = props;
+
     const rows = dataSourceRow.items ?? [];
-    const currentPage =
-        props.paging === "row"
-            ? props.dataSourceRow.offset / props.pageSize
-            : props.dataSourceColumn.offset / props.pageSize;
+    const currentPage = paging === "row" ? dataSourceRow.offset / pageSize : dataSourceColumn.offset / pageSize;
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (props.dataSourceCell.status === "available" && props.dataSourceCell.limit !== 0) {
+        if (dataSourceCell.status === "available" && dataSourceCell.limit !== 0) {
             setLoading(false);
         }
-    }, [props.dataSourceCell]);
+    }, [dataSourceCell]);
 
     useEffect(() => {
-        if (props.paging === "row") {
-            props.dataSourceRow.requestTotalCount(true);
-            if (props.dataSourceRow.limit === Number.POSITIVE_INFINITY) {
-                props.dataSourceRow.setLimit(props.pageSize);
+        if (paging === "row") {
+            dataSourceRow.requestTotalCount(true);
+            if (dataSourceRow.limit === Number.POSITIVE_INFINITY) {
+                dataSourceRow.setLimit(pageSize);
             }
         }
-        if (props.paging === "column") {
-            props.dataSourceColumn.requestTotalCount(true);
-            if (props.dataSourceColumn.limit === Number.POSITIVE_INFINITY) {
-                props.dataSourceColumn.setLimit(props.pageSize);
+        if (paging === "column") {
+            dataSourceColumn.requestTotalCount(true);
+            if (dataSourceColumn.limit === Number.POSITIVE_INFINITY) {
+                dataSourceColumn.setLimit(pageSize);
             }
         }
-    }, [props.dataSourceRow, props.dataSourceColumn, props.pageSize, props.paging]);
+    }, [dataSourceRow, dataSourceColumn, pageSize, paging]);
 
     useEffect(() => {
-        const length =
-            props.paging === "row" ? props.dataSourceColumn.items?.length ?? 0 : props.dataSourceRow.items?.length ?? 0;
-        const limit = props.pageSize * length;
-        if (props.pageCell && props.dataSourceCell.limit !== limit) {
-            props.dataSourceCell.setLimit(limit);
+        const length = paging === "row" ? dataSourceColumn.items?.length ?? 0 : dataSourceRow.items?.length ?? 0;
+        const limit = pageSize * length;
+        if (pageCell && dataSourceCell.limit !== limit) {
+            dataSourceCell.setLimit(limit);
         }
-    }, [
-        props.dataSourceCell,
-        props.dataSourceColumn,
-        props.pageSize,
-        props.pageCell,
-        props.paging,
-        props.dataSourceRow
-    ]);
+    }, [dataSourceCell, dataSourceColumn, pageSize, pageCell, paging, dataSourceRow]);
 
     const setPage = useCallback(
         (computePage: (prevPage: number) => number) => {
             const newPage = computePage(currentPage);
-            if (props.paging === "row") {
-                props.dataSourceRow.setOffset(newPage * props.pageSize);
+            if (paging === "row") {
+                dataSourceRow.setOffset(newPage * pageSize);
             }
-            if (props.paging === "column") {
-                props.dataSourceColumn.setOffset(newPage * props.pageSize);
+            if (paging === "column") {
+                dataSourceColumn.setOffset(newPage * pageSize);
             }
-            if (props.pageCell) {
-                const columnCount = props.dataSourceColumn.items?.length ?? 0;
-                props.dataSourceCell.setOffset(newPage * props.pageSize * columnCount);
+            if (pageCell) {
+                const columnCount = dataSourceColumn.items?.length ?? 0;
+                dataSourceCell.setOffset(newPage * pageSize * columnCount);
                 setLoading(true);
             }
         },
-        [
-            currentPage,
-            props.dataSourceRow,
-            props.paging,
-            props.pageSize,
-            props.dataSourceColumn,
-            props.dataSourceCell,
-            props.pageCell
-        ]
+        [currentPage, dataSourceRow, paging, pageSize, dataSourceColumn, dataSourceCell, pageCell]
     );
 
     let columnCount = dataSourceColumn.items?.length || 0;
@@ -89,26 +72,26 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
         columnCount += 1;
     }
     const pagination =
-        props.paging === "row" ? (
+        paging === "row" ? (
             <Pagination
-                canNextPage={props.dataSourceRow.hasMoreItems ?? false}
+                canNextPage={dataSourceRow.hasMoreItems ?? false}
                 canPreviousPage={currentPage !== 0}
                 gotoPage={(page: number) => setPage && setPage(() => page)}
                 nextPage={() => setPage && setPage(prev => prev + 1)}
-                numberOfItems={props.dataSourceRow.totalCount}
+                numberOfItems={dataSourceRow.totalCount}
                 page={currentPage}
-                pageSize={props.pageSize}
+                pageSize={pageSize}
                 previousPage={() => setPage && setPage(prev => prev - 1)}
             />
         ) : (
             <Pagination
-                canNextPage={props.dataSourceColumn.hasMoreItems ?? false}
+                canNextPage={dataSourceColumn.hasMoreItems ?? false}
                 canPreviousPage={currentPage !== 0}
                 gotoPage={(page: number) => setPage && setPage(() => page)}
                 nextPage={() => setPage && setPage(prev => prev + 1)}
-                numberOfItems={props.dataSourceColumn.totalCount}
+                numberOfItems={dataSourceColumn.totalCount}
                 page={currentPage}
-                pageSize={props.pageSize}
+                pageSize={pageSize}
                 previousPage={() => setPage && setPage(prev => prev - 1)}
             />
         );
@@ -119,9 +102,9 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             className={classNames(props.class, `mx-name-${props.name}`)}
             style={style}
             renderAs={renderAs}
-            paging={props.paging !== "none"}
+            paging={paging !== "none"}
             pagination={pagination}
-            pagingPosition={props.pagingPosition}
+            pagingPosition={pagingPosition}
         >
             {showHeaderAs !== "none" && (
                 <div className="widget-datagrid-grid-head" role="rowgroup">
@@ -154,7 +137,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                     showEmptyPlaceholder={props.showEmptyPlaceholder}
                     columnCount={columnCount}
                     emptyPlaceholder={props.emptyPlaceholder}
-                    renderAs={props.renderAs}
+                    renderAs={renderAs}
                 />
             )}
         </TableFrame>

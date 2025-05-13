@@ -81,8 +81,9 @@ export function Cells(props: CellsProps): ReactElement {
     const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs, pageCell } = props;
     const { showRowAs, columnClass, cellClass } = props;
     const { row, rowIndex, isHeader, loading } = props;
-    const { onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
-    // potential optimize with hash table?
+    const { onClickTrigger, onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
+
+    // Potential optimize with hash table?
     const cells =
         dataSourceColumn.items?.map(column => {
             const cell = dataSourceCell.items?.find(
@@ -110,6 +111,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                     <Header
                         className={classNames(cellClassColumn, cellClassValue)}
                         tooltipText={cellTooltipValue(props, cell)}
+                        clickTrigger={onClickTrigger}
                         onClick={onClick}
                         key={column.id}
                         renderAs={renderAs}
@@ -123,6 +125,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                     className={classNames(cellClassColumn, cellClassValue)}
                     key={`row_${row.id}_coll_${column.id}_cell_${cell?.id}`}
                     tooltipText={cellTooltipValue(props, cell)}
+                    clickTrigger={onClickTrigger}
                     onClick={onClick}
                     rowIndex={rowIndex}
                     renderAs={renderAs}
@@ -143,6 +146,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                 <Header
                     key={`row_${row.id}_cell_header`}
                     tooltipText={rowTooltipValue(props, row)}
+                    clickTrigger={onClickTrigger}
                     onClick={onClick}
                     renderAs={renderAs}
                 >
@@ -154,6 +158,7 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                 <Cell
                     key={`row_${row.id}_cell_header`}
                     tooltipText={rowTooltipValue(props, row)}
+                    clickTrigger={onClickTrigger}
                     onClick={onClick}
                     rowIndex={rowIndex}
                     renderAs={renderAs}
