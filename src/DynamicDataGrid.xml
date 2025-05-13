@@ -26,7 +26,7 @@
                     <description />
                 </property>
                 <property key="cellTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceCell">
-                    <caption>Dyanmic text</caption>
+                    <caption>Dynamic text</caption>
                     <description />
                     <translations>
                         <translation lang="en_US" />
@@ -68,8 +68,26 @@
                         <enumerationValue key="custom">Custom content</enumerationValue>
                     </enumerationValues>
                 </property>
+                <property key="rowWidgets" type="widgets" dataSource="dataSourceRow">
+                    <caption>Corner header content</caption>
+                    <description />
+                </property>
+                <property key="rowTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceRow">
+                    <caption>Header text</caption>
+                    <description />
+                    <translations>
+                        <translation lang="en_US" />
+                    </translations>
+                </property>
+                <property key="rowAttribute" type="attribute" dataSource="dataSourceRow">
+                    <caption>Header attribute</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
                 <property key="showRowColumnNameAs" type="enumeration" defaultValue="dynamicText">
-                    <caption>Show row header</caption>
+                    <caption>Corner header type</caption>
                     <description />
                     <enumerationValues>
                         <enumerationValue key="dynamicText">Dynamic text</enumerationValue>
@@ -81,33 +99,11 @@
                     <description />
                 </property>
                 <property key="rowColumnNameTextTemplate" required="false" type="textTemplate" multiline="false">
-                    <caption>Row column header</caption>
+                    <caption>Corner header text</caption>
                     <description />
                     <translations>
                         <translation lang="en_US" />
                     </translations>
-                </property>
-                <property key="rowWidgets" type="widgets" dataSource="dataSourceRow">
-                    <caption>Row header content</caption>
-                    <description />
-                </property>
-                <property key="rowTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceRow">
-                    <caption>Dyanmic text</caption>
-                    <description />
-                    <translations>
-                        <translation lang="en_US" />
-                    </translations>
-                </property>
-                <property key="rowAttribute" type="attribute" dataSource="dataSourceRow">
-                    <caption>Attribute</caption>
-                    <description />
-                    <attributeTypes>
-                        <attributeType name="String" />
-                    </attributeTypes>
-                </property>
-                <property key="emptyPlaceholder" type="widgets">
-                    <caption>Empty placeholder</caption>
-                    <description />
                 </property>
                 <property key="rowClass" type="expression" required="false" dataSource="dataSourceRow">
                     <caption>Dynamic class</caption>
@@ -133,13 +129,14 @@
                     <description />
                     <enumerationValues>
                         <enumerationValue key="none">None</enumerationValue>
+                        <enumerationValue key="firstRow">First row</enumerationValue>
                         <enumerationValue key="attribute">Attribute</enumerationValue>
                         <enumerationValue key="dynamicText">Dynamic text</enumerationValue>
                         <enumerationValue key="custom">Custom content</enumerationValue>
                     </enumerationValues>
                 </property>
                 <property key="headerAttribute" type="attribute" dataSource="dataSourceColumn">
-                    <caption>Attribute</caption>
+                    <caption>Header attribute</caption>
                     <description />
                     <attributeTypes>
                         <attributeType name="String" />
@@ -150,7 +147,7 @@
                     <description />
                 </property>
                 <property key="headerTextTemplate" type="textTemplate" multiline="false" dataSource="dataSourceColumn">
-                    <caption>Dyanmic text</caption>
+                    <caption>Header text</caption>
                     <description />
                     <translations>
                         <translation lang="en_US" />
@@ -197,49 +194,59 @@
             </propertyGroup>
         </propertyGroup>
 
-        <propertyGroup caption="Apperance">
-            <property key="renderAs" type="enumeration" defaultValue="grid">
-                <caption>Show as</caption>
-                <description />
-                <enumerationValues>
-                    <enumerationValue key="grid">Grid</enumerationValue>
-                    <enumerationValue key="table">Table</enumerationValue>
-                </enumerationValues>
-            </property>
-            <property key="paging" type="enumeration" defaultValue="none">
-                <caption>Paging</caption>
-                <description>When set to None all data are loaded</description>
-                <enumerationValues>
-                    <enumerationValue key="none">None</enumerationValue>
-                    <enumerationValue key="row">Row</enumerationValue>
-                    <enumerationValue key="column">Column</enumerationValue>
-                </enumerationValues>
-            </property>
-            <property key="pagingPosition" type="enumeration" defaultValue="bottom">
-                <caption>Paging position</caption>
-                <description />
-                <enumerationValues>
-                    <enumerationValue key="bottom">Below grid</enumerationValue>
-                    <enumerationValue key="top">Above grid</enumerationValue>
-                    <enumerationValue key="both">Both</enumerationValue>
-                </enumerationValues>
-            </property>
-            <property key="pageSize" type="integer" defaultValue="20">
-                <caption>Page size</caption>
-                <description />
-            </property>
-            <property key="pageCell" type="boolean" defaultValue="false">
-                <caption>Optimize cell paging</caption>
-                <description>Only enable when each row/column has a cell, and sorting of the cells and rows/column are are equal. Using data source Database or XPath. Does not support add/deletes.</description>
-            </property>
-            <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
-                <caption>Empty list message</caption>
-                <description />
-                <enumerationValues>
-                    <enumerationValue key="none">None</enumerationValue>
-                    <enumerationValue key="custom">Custom</enumerationValue>
-                </enumerationValues>
-            </property>
+        <propertyGroup caption="Appearance">
+            <propertyGroup caption="Appearance">
+                <property key="renderAs" type="enumeration" defaultValue="grid">
+                    <caption>Show as</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="grid">Grid</enumerationValue>
+                        <enumerationValue key="table">Table</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="showEmptyPlaceholder" type="enumeration" defaultValue="none">
+                    <caption>Empty list message</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="none">None</enumerationValue>
+                        <enumerationValue key="custom">Custom</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="emptyPlaceholder" type="widgets">
+                    <caption>Empty placeholder</caption>
+                    <description />
+                </property>
+            </propertyGroup>
+            
+            <propertyGroup caption="Paging">
+                <property key="paging" type="enumeration" defaultValue="none">
+                    <caption>Paging</caption>
+                    <description>When set to None all data are loaded</description>
+                    <enumerationValues>
+                        <enumerationValue key="none">None</enumerationValue>
+                        <enumerationValue key="row">Row</enumerationValue>
+                        <enumerationValue key="column">Column</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="pagingPosition" type="enumeration" defaultValue="bottom">
+                    <caption>Paging position</caption>
+                    <description />
+                    <enumerationValues>
+                        <enumerationValue key="bottom">Below grid</enumerationValue>
+                        <enumerationValue key="top">Above grid</enumerationValue>
+                        <enumerationValue key="both">Both</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="pageSize" type="integer" defaultValue="20">
+                    <caption>Page size</caption>
+                    <description />
+                </property>
+                <property key="pageCell" type="boolean" defaultValue="false">
+                    <caption>Optimize cell paging</caption>
+                    <description>Only enable when each row/column has a cell, and sorting of the cells and rows/column are are equal. Using data source Database or XPath. Does not support add/deletes.</description>
+                </property>
+            </propertyGroup>
+
         </propertyGroup>
     </properties>
 </widget>

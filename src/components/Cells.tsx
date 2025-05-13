@@ -3,8 +3,9 @@ import classNames from "classnames";
 import { ObjectItem } from "mendix";
 import { Cell } from "./Cell";
 import { DynamicDataGridContainerProps } from "../../typings/DynamicDataGridProps";
+import { Header } from "./Header";
 
-function getCellValue(props: DynamicDataGridContainerProps, cell?: ObjectItem): ReactNode {
+export function getCellValue(props: DynamicDataGridContainerProps, cell?: ObjectItem): ReactNode {
     const { cellAttribute, cellWidgets, cellTextTemplate, showCellAs } = props;
     let value: ReactNode = "";
 
@@ -48,12 +49,13 @@ interface CellsProps extends DynamicDataGridContainerProps {
     row: ObjectItem;
     rowIndex: number;
     loading: boolean;
+    isHeader?: boolean;
 }
 
 export function Cells(props: CellsProps): ReactElement {
     const { dataSourceCell, referenceRow, referenceColumn, dataSourceColumn, renderAs, pageCell } = props;
     const { showRowAs, columnClass, cellClass } = props;
-    const { row, rowIndex, loading } = props;
+    const { row, rowIndex, isHeader, loading } = props;
     const { onClickRow, onClickCell, onClickColumn, onClickRowHeader } = props;
     // potential optimize with hash table?
     const cells =
@@ -78,6 +80,18 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                     : undefined;
             const cellClassColumn = columnClass?.get(column).value ?? undefined;
             const cellClassValue = (cell && cellClass?.get(cell).value) ?? undefined;
+            if (isHeader) {
+                return (
+                    <Header
+                        className={classNames(cellClassColumn, cellClassValue)}
+                        onClick={onClick}
+                        key={column.id}
+                        renderAs={renderAs}
+                    >
+                        {getCellValue(props, cell)}
+                    </Header>
+                );
+            }
             return (
                 <Cell
                     className={classNames(cellClassColumn, cellClassValue)}
@@ -90,17 +104,27 @@ Please make sure your cell sort order and row sort order are matching, and cell 
                 </Cell>
             );
         }) ?? [];
+
     if (showRowAs !== "none") {
         const onClick = onClickRowHeader
             ? (): void => onClickRowHeader?.get(row).execute()
             : onClickRow
             ? (): void => onClickRow?.get(row).execute()
             : undefined;
-        cells.unshift(
-            <Cell key={`row_${row.id}_cell_header`} onClick={onClick} rowIndex={rowIndex} renderAs={renderAs}>
-                {getRowHeaderValue(props, row)}
-            </Cell>
-        );
+        if (isHeader) {
+            cells.unshift(
+                <Header key={`row_${row.id}_cell_header`} onClick={onClick} renderAs={renderAs}>
+                    {getRowHeaderValue(props, row)}
+                </Header>
+            );
+        } else {
+            cells.unshift(
+                <Cell key={`row_${row.id}_cell_header`} onClick={onClick} rowIndex={rowIndex} renderAs={renderAs}>
+                    {getRowHeaderValue(props, row)}
+                </Cell>
+            );
+        }
     }
+
     return <Fragment>{cells}</Fragment>;
 }
