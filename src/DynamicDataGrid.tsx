@@ -124,15 +124,19 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             pagingPosition={props.pagingPosition}
         >
             {showHeaderAs !== "none" && (
-                <Row key="header" renderAs={renderAs}>
-                    {<Headers {...props} />}
-                </Row>
+                <div className="widget-datagrid-grid-head" role="rowgroup">
+                    <Row key="header" renderAs={renderAs}>
+                        {<Headers {...props} />}
+                    </Row>
+                </div>
             )}
-            {rows.map((row, rowIndex) => (
-                <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
-                    <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
-                </Row>
-            ))}
+            <div className="widget-datagrid-grid-body table-content" role="rowgroup">
+                {rows.map((row, rowIndex) => (
+                    <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
+                        <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
+                    </Row>
+                ))}
+            </div>
             {rows.length === 0 && (
                 <EmptyPlaceholder
                     showEmptyPlaceholder={props.showEmptyPlaceholder}
