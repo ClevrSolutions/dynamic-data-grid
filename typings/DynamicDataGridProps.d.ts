@@ -79,6 +79,8 @@ export interface DynamicDataGridPreviewProps {
     style: string;
     styleObject?: CSSProperties;
     readOnly: boolean;
+    renderMode: "design" | "xray" | "structure";
+    translate: (text: string) => string;
     dataSourceCell: {} | { caption: string } | { type: string } | null;
     showCellAs: ShowCellAsEnum;
     cellWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
