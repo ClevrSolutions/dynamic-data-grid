@@ -6,6 +6,7 @@ interface RowHeaderProps {
     children: ReactNode;
     className?: string;
     key: string;
+    tooltipText?: string;
     onClick?: () => void;
     renderAs: RenderAsEnum;
 }
@@ -17,6 +18,7 @@ export function Header(props: RowHeaderProps): ReactElement {
                 className={classNames("th", props.className, { clickable: !!props.onClick })}
                 role="columnheader"
                 key={props.key}
+                title={props.tooltipText}
                 onClick={props.onClick}
             >
                 <div className="column-container">
@@ -29,6 +31,7 @@ export function Header(props: RowHeaderProps): ReactElement {
         <th
             className={classNames(props.className, { clickable: !!props.onClick })}
             key={props.key}
+            title={props.tooltipText}
             onClick={props.onClick}
         >
             {props.children}
