@@ -12,15 +12,15 @@ export type ShowRowAsEnum = "none" | "attribute" | "dynamicText" | "custom";
 
 export type ShowRowColumnNameAsEnum = "dynamicText" | "custom";
 
-export type ShowHeaderAsEnum = "none" | "attribute" | "dynamicText" | "custom";
+export type ShowHeaderAsEnum = "none" | "firstRow" | "attribute" | "dynamicText" | "custom";
 
 export type RenderAsEnum = "grid" | "table";
+
+export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
 export type PagingEnum = "none" | "row" | "column";
 
 export type PagingPositionEnum = "bottom" | "top" | "both";
-
-export type ShowEmptyPlaceholderEnum = "none" | "custom";
 
 export interface DynamicDataGridContainerProps {
     name: string;
@@ -36,13 +36,12 @@ export interface DynamicDataGridContainerProps {
     referenceRow: ListReferenceValue;
     dataSourceRow: ListValue;
     showRowAs: ShowRowAsEnum;
-    showRowColumnNameAs: ShowRowColumnNameAsEnum;
-    rowColumnNameWidgets: ReactNode;
-    rowColumnNameTextTemplate?: DynamicValue<string>;
     rowWidgets: ListWidgetValue;
     rowTextTemplate: ListExpressionValue<string>;
     rowAttribute: ListAttributeValue<string>;
-    emptyPlaceholder: ReactNode;
+    showRowColumnNameAs: ShowRowColumnNameAsEnum;
+    rowColumnNameWidgets: ReactNode;
+    rowColumnNameTextTemplate?: DynamicValue<string>;
     rowClass?: ListExpressionValue<string>;
     referenceColumn: ListReferenceValue;
     dataSourceColumn: ListValue;
@@ -57,11 +56,12 @@ export interface DynamicDataGridContainerProps {
     onClickColumn?: ListActionValue;
     onClickCell?: ListActionValue;
     renderAs: RenderAsEnum;
+    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
+    emptyPlaceholder: ReactNode;
     paging: PagingEnum;
     pagingPosition: PagingPositionEnum;
     pageSize: number;
     pageCell: boolean;
-    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
 }
 
 export interface DynamicDataGridPreviewProps {
@@ -82,13 +82,12 @@ export interface DynamicDataGridPreviewProps {
     referenceRow: string;
     dataSourceRow: {} | { caption: string } | { type: string } | null;
     showRowAs: ShowRowAsEnum;
-    showRowColumnNameAs: ShowRowColumnNameAsEnum;
-    rowColumnNameWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
-    rowColumnNameTextTemplate: string;
     rowWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     rowTextTemplate: string;
     rowAttribute: string;
-    emptyPlaceholder: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    showRowColumnNameAs: ShowRowColumnNameAsEnum;
+    rowColumnNameWidgets: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
+    rowColumnNameTextTemplate: string;
     rowClass: string;
     referenceColumn: string;
     dataSourceColumn: {} | { caption: string } | { type: string } | null;
@@ -103,9 +102,10 @@ export interface DynamicDataGridPreviewProps {
     onClickColumn: {} | null;
     onClickCell: {} | null;
     renderAs: RenderAsEnum;
+    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
+    emptyPlaceholder: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     paging: PagingEnum;
     pagingPosition: PagingPositionEnum;
     pageSize: number | null;
     pageCell: boolean;
-    showEmptyPlaceholder: ShowEmptyPlaceholderEnum;
 }

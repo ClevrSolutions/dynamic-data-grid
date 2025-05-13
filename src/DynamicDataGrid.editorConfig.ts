@@ -115,77 +115,59 @@ export function getProperties(
     values: DynamicDataGridPreviewProps,
     defaultProperties: Properties /* , target: Platform*/
 ): Properties {
-    // Do the values manipulation here to control the visibility of properties in Studio and Studio Pro conditionally.
-    /* Example
-    if (values.myProperty === "custom") {
-        delete defaultProperties.properties.myOtherProperty;
-    }
-    */
     if (values.showCellAs === "attribute") {
-        hidePropertiesIn(defaultProperties, values, ["cellWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["cellTextTemplate"]);
-    }
-    if (values.showCellAs === "custom") {
-        hidePropertiesIn(defaultProperties, values, ["cellAttribute"]);
-        hidePropertiesIn(defaultProperties, values, ["cellTextTemplate"]);
-    }
-    if (values.showCellAs === "dynamicText") {
-        hidePropertiesIn(defaultProperties, values, ["cellWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["cellAttribute"]);
+        hidePropertiesIn(defaultProperties, values, ["cellWidgets", "cellTextTemplate"]);
+    } else if (values.showCellAs === "custom") {
+        hidePropertiesIn(defaultProperties, values, ["cellAttribute", "cellTextTemplate"]);
+    } else if (values.showCellAs === "dynamicText") {
+        hidePropertiesIn(defaultProperties, values, ["cellWidgets", "cellAttribute"]);
     }
     if (values.showEmptyPlaceholder === "none") {
         hidePropertiesIn(defaultProperties, values, ["emptyPlaceholder"]);
     }
-    if (values.showHeaderAs === "none") {
-        hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
-        hidePropertiesIn(defaultProperties, values, ["headerAttribute"]);
-        hidePropertiesIn(defaultProperties, values, ["rowColumnNameTextTemplate"]);
-        hidePropertiesIn(defaultProperties, values, ["onClickColumnHeader"]);
+    if (values.showHeaderAs === "none" || values.showHeaderAs === "firstRow") {
+        hidePropertiesIn(defaultProperties, values, [
+            "headerWidgets",
+            "headerTextTemplate",
+            "headerAttribute",
+            "showRowColumnNameAs",
+            "rowColumnNameTextTemplate",
+            "onClickColumnHeader"
+        ]);
+    } else if (values.showHeaderAs === "attribute") {
+        hidePropertiesIn(defaultProperties, values, ["headerWidgets", "headerTextTemplate"]);
+    } else if (values.showHeaderAs === "custom") {
+        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate", "headerAttribute"]);
+    } else if (values.showHeaderAs === "dynamicText") {
+        hidePropertiesIn(defaultProperties, values, ["headerWidgets", "headerAttribute"]);
     }
-    if (values.showHeaderAs === "attribute") {
-        hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
-    }
-    if (values.showHeaderAs === "custom") {
-        hidePropertiesIn(defaultProperties, values, ["headerTextTemplate"]);
-        hidePropertiesIn(defaultProperties, values, ["headerAttribute"]);
-    }
-    if (values.showHeaderAs === "dynamicText") {
-        hidePropertiesIn(defaultProperties, values, ["headerWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["headerAttribute"]);
-    }
-    if (values.showRowAs === "none") {
-        hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate"]);
-        hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
-        hidePropertiesIn(defaultProperties, values, ["rowColumnNameTextTemplate"]);
-        hidePropertiesIn(defaultProperties, values, ["onClickRowHeader"]);
+    if (values.showHeaderAs === "firstRow") {
+        hidePropertiesIn(defaultProperties, values, ["paging"]);
     }
     if (values.showRowAs === "attribute") {
-        hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate"]);
-    }
-    if (values.showRowAs === "custom") {
-        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate"]);
-        hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
-    }
-    if (values.showRowAs === "dynamicText") {
-        hidePropertiesIn(defaultProperties, values, ["rowWidgets"]);
-        hidePropertiesIn(defaultProperties, values, ["rowAttribute"]);
+        hidePropertiesIn(defaultProperties, values, ["rowWidgets", "rowTextTemplate"]);
+    } else if (values.showRowAs === "custom") {
+        hidePropertiesIn(defaultProperties, values, ["rowTextTemplate", "rowAttribute"]);
+    } else if (values.showRowAs === "dynamicText") {
+        hidePropertiesIn(defaultProperties, values, ["rowWidgets", "rowAttribute"]);
+    } else if (values.showRowAs === "none") {
+        hidePropertiesIn(defaultProperties, values, [
+            "showRowColumnNameAs",
+            "rowColumnNameTextTemplate",
+            "rowWidgets",
+            "rowTextTemplate",
+            "rowAttribute",
+            "onClickRowHeader"
+        ]);
     }
     if (values.onClickColumn !== null) {
-        hidePropertiesIn(defaultProperties, values, ["onClickCell"]);
-        hidePropertiesIn(defaultProperties, values, ["onClickRow"]);
+        hidePropertiesIn(defaultProperties, values, ["onClickCell", "onClickRow"]);
     }
     if (values.onClickRow !== null) {
-        hidePropertiesIn(defaultProperties, values, ["onClickCell"]);
-        hidePropertiesIn(defaultProperties, values, ["onClickColumn"]);
+        hidePropertiesIn(defaultProperties, values, ["onClickCell", "onClickColumn"]);
     }
     if (values.paging === "none") {
-        hidePropertiesIn(defaultProperties, values, ["pageSize"]);
-        hidePropertiesIn(defaultProperties, values, ["pageCell"]);
-        hidePropertiesIn(defaultProperties, values, ["pagingPosition"]);
+        hidePropertiesIn(defaultProperties, values, ["pageSize", "pageCell", "pagingPosition"]);
     }
     if (values.showRowColumnNameAs === "custom") {
         hidePropertiesIn(defaultProperties, values, ["rowColumnNameTextTemplate"]);
@@ -220,53 +202,58 @@ export const getPreview = (
     const canHideDataSourceHeader = x >= 9 && y >= 20;
     const palette = structurePreviewPalette[isDarkMode ? "dark" : "light"];
 
-    const columns = rowLayout({
-        columnSize: "fixed"
-    })(
-        container({
-            borders: true,
-            grow: values.showRowAs !== "none" ? 1 : 0,
-            backgroundColor: palette.background.topbarStandard
+    const column = (isHeader: boolean) =>
+        rowLayout({
+            columnSize: "fixed"
         })(
-            values.showRowAs === "custom"
-                ? dropzone(
-                      dropzone.placeholder("Row widgets"),
-                      dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
-                  )(values.rowWidgets)
-                : container({
-                      padding: 8
-                  })(
-                      text({ fontSize: 10, fontColor: palette.text.secondary })(
-                          values.showRowAs === "dynamicText"
-                              ? values.rowTextTemplate ?? "Dynamic text"
-                              : `[${values.rowAttribute ? values.rowAttribute : "No attribute selected"}]`
-                      )
-                  )
-        ),
-
-        ...[...Array(5)].map(_ =>
             container({
                 borders: true,
-                grow: 1,
-                backgroundColor: undefined
+                grow: values.showRowAs !== "none" ? 1 : 0,
+                backgroundColor: palette.background.topbarStandard
             })(
-                values.showCellAs === "custom"
+                values.showRowAs === "custom"
                     ? dropzone(
-                          dropzone.placeholder("Content widgets"),
+                          dropzone.placeholder("Row widgets"),
                           dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
-                      )(values.cellWidgets)
+                      )(values.rowWidgets)
                     : container({
                           padding: 8
                       })(
-                          text({ fontSize: 10, fontColor: palette.text.secondary })(
-                              values.showCellAs === "dynamicText"
-                                  ? values.cellTextTemplate ?? "Dynamic text"
-                                  : `[${values.cellAttribute ? values.cellAttribute : "No attribute selected"}]`
+                          text({
+                              fontSize: 10,
+                              bold: isHeader,
+                              fontColor: palette.text.secondary
+                          })(
+                              values.showRowAs === "dynamicText"
+                                  ? values.rowTextTemplate ?? "Dynamic text"
+                                  : `[${values.rowAttribute ? values.rowAttribute : "No attribute selected"}]`
                           )
                       )
+            ),
+
+            ...[...Array(5)].map(_ =>
+                container({
+                    borders: true,
+                    grow: 1,
+                    backgroundColor: undefined
+                })(
+                    values.showCellAs === "custom"
+                        ? dropzone(
+                              dropzone.placeholder("Content widgets"),
+                              dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
+                          )(values.cellWidgets)
+                        : container({
+                              padding: 8
+                          })(
+                              text({ fontSize: 10, bold: isHeader, fontColor: palette.text.secondary })(
+                                  values.showCellAs === "dynamicText"
+                                      ? values.cellTextTemplate ?? "Dynamic text"
+                                      : `[${values.cellAttribute ? values.cellAttribute : "No attribute selected"}]`
+                              )
+                          )
+                )
             )
-        )
-    );
+        );
 
     const gridTitle = rowLayout({
         columnSize: "fixed",
@@ -285,12 +272,12 @@ export const getPreview = (
         values.showRowAs !== "none"
             ? container({
                   borders: true,
-                  grow: values.showHeaderAs !== "none" ? 1 : 0,
+                  grow: values.showHeaderAs === "none" || values.showHeaderAs === "firstRow" ? 0 : 1,
                   backgroundColor: palette.background.topbarStandard
               })(
                   values.showRowColumnNameAs === "custom"
                       ? dropzone(
-                            dropzone.placeholder("Row column name widgets"),
+                            dropzone.placeholder("Corner content"),
                             dropzone.hideDataSourceHeaderIf(canHideDataSourceHeader)
                         )(values.rowColumnNameWidgets)
                       : container({
@@ -349,6 +336,8 @@ export const getPreview = (
               ]
             : [];
 
+    const headers = values.showHeaderAs !== "firstRow" && values.showHeaderAs !== "none" ? [columnHeaders] : [];
+
     return container()(
         gridTitle,
         rowLayout({
@@ -364,7 +353,7 @@ export const getPreview = (
                 grow: 5
             })(...(canHideDataSourceHeader ? [datasource(values.dataSourceColumn)()] : []))
         ),
-        columnHeaders,
+        ...headers,
         rowLayout({
             columnSize: "fixed"
         })(
@@ -377,7 +366,7 @@ export const getPreview = (
                 grow: 5
             })(...(canHideDataSourceHeader ? [datasource(values.dataSourceCell)()] : []))
         ),
-        ...Array.from({ length: 5 }).map(() => columns),
+        ...Array.from({ length: 5 }).map((_, index) => column(index === 0 && values.showHeaderAs === "firstRow")),
         ...customEmptyMessageWidgets
     );
 };

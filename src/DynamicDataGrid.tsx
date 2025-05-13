@@ -125,17 +125,29 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
         >
             {showHeaderAs !== "none" && (
                 <div className="widget-datagrid-grid-head" role="rowgroup">
-                    <Row key="header" renderAs={renderAs}>
-                        {<Headers {...props} />}
-                    </Row>
+                    {showHeaderAs !== "firstRow" && (
+                        <Row key="header" renderAs={renderAs}>
+                            <Headers {...props} />
+                        </Row>
+                    )}
+                    {showHeaderAs === "firstRow" && rows[0] && (
+                        <Row key="header" renderAs={renderAs}>
+                            <Cells {...props} row={rows[0]} rowIndex={0} loading={loading} isHeader />
+                        </Row>
+                    )}
                 </div>
             )}
             <div className="widget-datagrid-grid-body table-content" role="rowgroup">
-                {rows.map((row, rowIndex) => (
-                    <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
-                        <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
-                    </Row>
-                ))}
+                {rows.map((row, rowIndex) => {
+                    if (showHeaderAs === "firstRow" && rowIndex === 0) {
+                        return null;
+                    }
+                    return (
+                        <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
+                            <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
+                        </Row>
+                    );
+                })}
             </div>
             {rows.length === 0 && (
                 <EmptyPlaceholder
