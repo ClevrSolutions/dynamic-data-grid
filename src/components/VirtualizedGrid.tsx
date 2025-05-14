@@ -1,5 +1,4 @@
-import { ReactElement, createElement, ReactNode, useEffect } from "react";
-// import classNames from "classnames";
+import { ReactElement, createElement, ReactNode } from "react";
 import { AutoSizer, MultiGrid, GridCellRenderer } from "react-virtualized";
 import classNames from "classnames";
 import { getCellValue, getRowHeaderValue } from "./Cells";
@@ -21,6 +20,7 @@ import "react-virtualized/styles.css";
 // - sizer for cell
 // - table header class
 // - Condition classes, refresh issue
+// - Support latest feature; double click and tooltip
 
 interface VirtualizedGridProps extends DynamicDataGridContainerProps {
     cellDataset: DataSetMap;
@@ -31,16 +31,6 @@ export function VirtualizedGrid(props: VirtualizedGridProps): ReactElement {
     const { style, dataSourceColumn, dataSourceRow, showRowAs, rowClass, showHeaderAs } = props;
     const { onClickRow, onClickCell, onClickColumn, onClickRowHeader, onClickColumnHeader } = props;
     const { columnClass, cellClass } = props;
-
-    // For some unknown reason this widget is wrapped in mxui.widget.Wrapper with an inline !important style
-    // This prevents to measure the size of the parent. Dirty hack to fix the style.
-    useEffect(() => {
-        const parent = document.querySelector(`[data-mendix-id$="${props.name}"]`) as HTMLElement;
-        if (parent) {
-            parent.style.display = "block";
-            parent.style.height = "100%";
-        }
-    }, [props.name]);
 
     const cellRenderer: GridCellRenderer = ({ columnIndex, key, rowIndex, style }) => {
         const rowIndexData = showHeaderAs === "none" ? rowIndex : rowIndex - 1;
@@ -113,6 +103,8 @@ export function VirtualizedGrid(props: VirtualizedGridProps): ReactElement {
 
     const rowCount = dataSourceRow.items ? dataSourceRow.items.length + (showHeaderAs === "none" ? 0 : 1) : 0;
     const colCount = dataSourceColumn.items ? dataSourceColumn.items.length + (showRowAs === "none" ? 0 : 1) : 0;
+
+    // Note: AutoSizer is patched, to support in case the widget being wrapped in mxui.widget.Wrapper
 
     return (
         <AutoSizer disableHeight={props.gridHeight !== "max"} className="widget-table" style={style}>

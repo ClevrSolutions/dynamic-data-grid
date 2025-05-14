@@ -1,3 +1,25 @@
+diff --git a/node_modules/react-virtualized/dist/es/AutoSizer/AutoSizer.js b/node_modules/react-virtualized/dist/es/AutoSizer/AutoSizer.js
+index f923f7f..882730e 100644
+--- a/node_modules/react-virtualized/dist/es/AutoSizer/AutoSizer.js
++++ b/node_modules/react-virtualized/dist/es/AutoSizer/AutoSizer.js
+@@ -96,7 +96,16 @@ function (_React$Component) {
+         // Delay access of parentNode until mount.
+         // This handles edge-cases where the component has already been unmounted before its ref has been set,
+         // As well as libraries like react-lite which have a slightly different lifecycle.
+-        this._parentNode = this._autoSizer.parentNode;
++        if (this._autoSizer.parentNode.style.display === "contents") {
++          // Only when a Mendix React widget is placed inside Dojo component, it is wrapped in a mxui.widget.Wrapper
++          // This generates a DIV with an inline display: contents !important;
++          // This prevents the AutoSizer to measure the size of it parent.
++          // To solve this, select the parentNode of parentNode, when parent has style display: contents
++          this._parentNode = this._autoSizer.parentNode.parentNode;
++        } else {
++          this._parentNode = this._autoSizer.parentNode;
++        }
++        
+         this._window = this._autoSizer.parentNode.ownerDocument.defaultView; // Defer requiring resize handler in order to support server-side rendering.
+         // See issue #41
+ 
 diff --git a/node_modules/react-virtualized/dist/es/WindowScroller/utils/onScroll.js b/node_modules/react-virtualized/dist/es/WindowScroller/utils/onScroll.js
 index d00f0f1..8bf5a05 100644
 --- a/node_modules/react-virtualized/dist/es/WindowScroller/utils/onScroll.js
