@@ -15,7 +15,7 @@ interface TableFrameProps {
 
 export function TableFrame(props: TableFrameProps): ReactElement {
     if (props.renderAs === "grid") {
-        const rowStyle = { gridTemplateColumns: "1fr ".repeat(props.columnCount) };
+        const rowStyle = { "--widgets-grid-template-columns": "1fr ".repeat(props.columnCount) } as CSSProperties;
         return (
             <div className={classNames(props.className, "widget-dynamic-data-grid")} style={props.style}>
                 <div className="widget-datagrid-top-bar table-header">

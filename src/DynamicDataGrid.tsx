@@ -126,7 +126,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                         return null;
                     }
                     return (
-                        <Row className={rowClass?.get(row).value ?? ""} key={row.id} renderAs={renderAs}>
+                        <Row className={rowClass?.get(row).value ?? ""} key={row.id ?? "loader"} renderAs={renderAs}>
                             <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
                         </Row>
                     );
