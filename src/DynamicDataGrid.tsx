@@ -1,4 +1,4 @@
-import { ReactElement, createElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, createElement } from "react";
 import classNames from "classnames";
 
 import { TableFrame } from "./components/TableFrame";
@@ -9,94 +9,34 @@ import { Row } from "./components/Row";
 import { Cells } from "./components/Cells";
 import { Pagination } from "./components/Pagination";
 import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
+import { useGridDataSource } from "./hooks/useGridDataSource";
 
 import { DynamicDataGridContainerProps } from "../typings/DynamicDataGridProps";
 
-import "./ui/DynamicDataGrid.css";
-
 export default function DynamicDataGrid(props: DynamicDataGridContainerProps): ReactElement {
     const { style, showRowAs, rowClass, renderAs, showHeaderAs } = props;
-    const { dataSourceCell, dataSourceColumn, pageSize, pageCell, paging, pagingPosition, dataSourceRow } = props;
+    const { dataSourceColumn, pageSize, paging, pagingPosition } = props;
 
-    const rows = dataSourceRow.items ?? [];
-    const currentPage = paging === "row" ? dataSourceRow.offset / pageSize : dataSourceColumn.offset / pageSize;
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (dataSourceCell.status === "available" && dataSourceCell.limit !== 0) {
-            setLoading(false);
-        }
-    }, [dataSourceCell]);
-
-    useEffect(() => {
-        if (paging === "row") {
-            dataSourceRow.requestTotalCount(true);
-            if (dataSourceRow.limit === Number.POSITIVE_INFINITY) {
-                dataSourceRow.setLimit(pageSize);
-            }
-        }
-        if (paging === "column") {
-            dataSourceColumn.requestTotalCount(true);
-            if (dataSourceColumn.limit === Number.POSITIVE_INFINITY) {
-                dataSourceColumn.setLimit(pageSize);
-            }
-        }
-    }, [dataSourceRow, dataSourceColumn, pageSize, paging]);
-
-    useEffect(() => {
-        const length = paging === "row" ? dataSourceColumn.items?.length ?? 0 : dataSourceRow.items?.length ?? 0;
-        const limit = pageSize * length;
-        if (pageCell && dataSourceCell.limit !== limit) {
-            dataSourceCell.setLimit(limit);
-        }
-    }, [dataSourceCell, dataSourceColumn, pageSize, pageCell, paging, dataSourceRow]);
-
-    const setPage = useCallback(
-        (computePage: (prevPage: number) => number) => {
-            const newPage = computePage(currentPage);
-            if (paging === "row") {
-                dataSourceRow.setOffset(newPage * pageSize);
-            }
-            if (paging === "column") {
-                dataSourceColumn.setOffset(newPage * pageSize);
-            }
-            if (pageCell) {
-                const columnCount = dataSourceColumn.items?.length ?? 0;
-                dataSourceCell.setOffset(newPage * pageSize * columnCount);
-                setLoading(true);
-            }
-        },
-        [currentPage, dataSourceRow, paging, pageSize, dataSourceColumn, dataSourceCell, pageCell]
-    );
+    const { rows, loading, currentPage, setPage, paginationSource } = useGridDataSource(props);
 
     let columnCount = dataSourceColumn.items?.length || 0;
     if (showRowAs !== "none") {
         columnCount += 1;
     }
+
     const pagination =
-        paging === "row" ? (
+        paging !== "none" ? (
             <Pagination
-                canNextPage={dataSourceRow.hasMoreItems ?? false}
+                canNextPage={paginationSource.hasMoreItems ?? false}
                 canPreviousPage={currentPage !== 0}
-                gotoPage={(page: number) => setPage && setPage(() => page)}
-                nextPage={() => setPage && setPage(prev => prev + 1)}
-                numberOfItems={dataSourceRow.totalCount}
+                gotoPage={(page: number) => setPage(() => page)}
+                nextPage={() => setPage(prev => prev + 1)}
+                numberOfItems={paginationSource.totalCount}
                 page={currentPage}
                 pageSize={pageSize}
-                previousPage={() => setPage && setPage(prev => prev - 1)}
+                previousPage={() => setPage(prev => prev - 1)}
             />
-        ) : (
-            <Pagination
-                canNextPage={dataSourceColumn.hasMoreItems ?? false}
-                canPreviousPage={currentPage !== 0}
-                gotoPage={(page: number) => setPage && setPage(() => page)}
-                nextPage={() => setPage && setPage(prev => prev + 1)}
-                numberOfItems={dataSourceColumn.totalCount}
-                page={currentPage}
-                pageSize={pageSize}
-                previousPage={() => setPage && setPage(prev => prev - 1)}
-            />
-        );
+        ) : null;
 
     return (
         <TableFrame
@@ -115,6 +55,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                             <Headers {...props} />
                         </Row>
                     )}
+
                     {showHeaderAs === "firstRow" && rows[0] && (
                         <Row key="header" renderAs={renderAs}>
                             <Cells {...props} row={rows[0]} rowIndex={0} loading={loading} isHeader />
@@ -122,11 +63,13 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                     )}
                 </Head>
             )}
+
             <Body renderAs={renderAs}>
                 {rows.map((row, rowIndex) => {
                     if (showHeaderAs === "firstRow" && rowIndex === 0) {
                         return null;
                     }
+
                     return (
                         <Row className={rowClass?.get(row).value ?? ""} key={row.id ?? "loader"} renderAs={renderAs}>
                             <Cells {...props} row={row} rowIndex={rowIndex} loading={loading} />
@@ -134,6 +77,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                     );
                 })}
             </Body>
+
             {rows.length === 0 && (
                 <EmptyPlaceholder
                     showEmptyPlaceholder={props.showEmptyPlaceholder}
