@@ -1,12 +1,14 @@
 import { ReactElement, createElement, useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
 
+import { TableFrame } from "./components/TableFrame";
+import { Head } from "./components/Head";
+import { Body } from "./components/Body";
 import { Headers } from "./components/Headers";
 import { Row } from "./components/Row";
-import { TableFrame } from "./components/TableFrame";
-import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
 import { Cells } from "./components/Cells";
 import { Pagination } from "./components/Pagination";
+import { EmptyPlaceholder } from "./components/EmptyPlaceholder";
 
 import { DynamicDataGridContainerProps } from "../typings/DynamicDataGridProps";
 
@@ -107,7 +109,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
             pagingPosition={pagingPosition}
         >
             {showHeaderAs !== "none" && (
-                <div className="widget-datagrid-grid-head" role="rowgroup">
+                <Head renderAs={renderAs}>
                     {showHeaderAs !== "firstRow" && (
                         <Row key="header" renderAs={renderAs}>
                             <Headers {...props} />
@@ -118,9 +120,9 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                             <Cells {...props} row={rows[0]} rowIndex={0} loading={loading} isHeader />
                         </Row>
                     )}
-                </div>
+                </Head>
             )}
-            <div className="widget-datagrid-grid-body table-content" role="rowgroup">
+            <Body renderAs={renderAs}>
                 {rows.map((row, rowIndex) => {
                     if (showHeaderAs === "firstRow" && rowIndex === 0) {
                         return null;
@@ -131,7 +133,7 @@ export default function DynamicDataGrid(props: DynamicDataGridContainerProps): R
                         </Row>
                     );
                 })}
-            </div>
+            </Body>
             {rows.length === 0 && (
                 <EmptyPlaceholder
                     showEmptyPlaceholder={props.showEmptyPlaceholder}
